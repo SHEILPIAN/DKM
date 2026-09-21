@@ -1,0 +1,201 @@
+// ====================================================================
+// SCHEMA PRISMA - SISTEM MANAJEMEN DKM (DEWAN KEMAKMURAN MASJID)
+// ====================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --------------------------------------------------------------------
+// 1. MODUL AUTENTIKASI & PENGGUNA (RBAC)
+// --------------------------------------------------------------------
+model User {
+  id        Int         @id @default(autoincrement())
+  nama      String
+  email     String      @unique
+  password  String
+  role      Role        @default(PIKET)
+  transaksi Transaksi[] // Relasi: 1 User bisa input banyak transaksi
+  createdAt DateTime    @default(now())
+}
+
+enum Role {
+  SUPER_ADMIN
+  KETUA_DKM
+  BENDAHARA
+  PIKET
+}
+
+// --------------------------------------------------------------------
+// 2. MODUL KEUANGAN (KAS & TRANSAKSI)
+// --------------------------------------------------------------------
+model KategoriKas {
+  id        Int         @id @default(autoincrement())
+  nama      String      @unique // misal: "Kas Operasional", "Kas Anak Yatim"
+  saldo     Decimal     @default(0.00)
+  transaksi Transaksi[]
+}
+
+model Transaksi {
+  id           Int      @id @default(autoincrement())
+  tipe         TipeTrx // IN (Masuk) atau OUT (Keluar)
+  nominal      Decimal
+  keterangan   String
+  buktiFotoUrl String? // URL gambar bukti nota/transfer
+  tanggal      DateTime @default(now())
+
+  // Relasi ke User (Siapa yang input data)
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  // Relasi ke Kategori Kas (Pos dana mana yang dipotong/ditambah)
+  kategoriId Int
+  kategori   KategoriKas @relation(fields: [kategoriId], references: [id])
+}
+
+enum TipeTrx {
+  IN
+  OUT
+}
+
+// --------------------------------------------------------------------
+// 3. MODUL ASET & RESERVASI FASILITAS
+// --------------------------------------------------------------------
+model Fasilitas {
+  id        Int         @id @default(autoincrement())
+  nama      String // misal: "Aula Utama", "Tenda Kursi"
+  deskripsi String?
+  reservasi Reservasi[]
+}
+
+model Reservasi {
+  id           Int             @id @default(autoincrement())
+  namaPemohon  String
+  kontak       String // No WhatsApp
+  tujuanAcara  String // misal: "Akad Nikah", "Rapat RT"
+  waktuMulai   DateTime
+  waktuSelesai DateTime
+  status       StatusReservasi @default(PENDING)
+
+  fasilitasId Int
+  fasilitas   Fasilitas @relation(fields: [fasilitasId], references: [id])
+  createdAt   DateTime  @default(now())
+}
+
+enum StatusReservasi {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+// --------------------------------------------------------------------
+// 4. MODUL ZISWAF & QURBAN
+// --------------------------------------------------------------------
+model Mustahiq {
+  id       Int           @id @default(autoincrement())
+  nama     String
+  alamat   String
+  kategori KategoriAsnaf
+  status   Boolean       @default(true) // Aktif/Tidak
+}
+
+model HewanQurban {
+  id        Int              @id @default(autoincrement())
+  tipeHewan TipeHewan
+  hargaBeli Decimal
+  slotMaks  Int // Sapi = 7, Kambing = 1
+  shohibul  ShohibulQurban[] // Relasi ke pendaftar/pekurban
+}
+
+model ShohibulQurban {
+  id         Int         @id @default(autoincrement())
+  nama       String
+  atasNama   String // Niat qurban atas nama siapa
+  bayarLunas Boolean     @default(false)
+  hewanId    Int
+  hewan      HewanQurban @relation(fields: [hewanId], references: [id])
+}
+
+enum KategoriAsnaf {
+  FAKIR
+  MISKIN
+  AMIL
+  MUALAF
+  GHARIM
+  FISABILILLAH
+  IBNUSABIL
+}
+
+enum TipeHewan {
+  SAPI
+  KAMBING
+  DOMBA
+}
+
+// --------------------------------------------------------------------
+// 5. MODUL HR & PENGGAJIAN PETUGAS (KAFALAH)
+// --------------------------------------------------------------------
+model Pegawai {
+  id          Int        @id @default(autoincrement())
+  nama        String
+  jabatan     Jabatan
+  gajiPokok   Decimal
+  rekening    String
+  kehadiran   Absensi[]
+  gajiBulanan SlipGaji[]
+}
+
+model Absensi {
+  id         Int         @id @default(autoincrement())
+  tanggal    DateTime    @default(now())
+  waktuSalat WaktuSalat
+  status     StatusHadir
+  pegawaiId  Int
+  pegawai    Pegawai     @relation(fields: [pegawaiId], references: [id])
+}
+
+model SlipGaji {
+  id        Int        @id @default(autoincrement())
+  bulan     String // misal: "September 2026"
+  nominal   Decimal
+  status    StatusGaji @default(PENDING)
+  pegawaiId Int
+  pegawai   Pegawai    @relation(fields: [pegawaiId], references: [id])
+  createdAt DateTime   @default(now())
+}
+
+enum Jabatan {
+  IMAM
+  MUADZIN
+  MARBOT
+  GURU_TPA
+  SATPAM
+}
+
+enum WaktuSalat {
+  SUBUH
+  DZUHUR
+  ASHAR
+  MAGHRIB
+  ISYA
+  JUMAT
+}
+
+enum StatusHadir {
+  HADIR
+  ALPA
+  IZIN
+  SAKIT
+}
+
+enum StatusGaji {
+  PENDING
+  APPROVED
+  PAID
+}
