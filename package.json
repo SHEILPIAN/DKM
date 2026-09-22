@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "next build && npx cap sync android",
     "start": "next start",
     "lint": "next lint",
     "android:sync": "npx cap sync android",
-    "android:open": "npx cap open android"
+    "android:open": "npx cap open android",
+    "android:build": "cd android && .\\gradlew assembleDebug"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.2",
