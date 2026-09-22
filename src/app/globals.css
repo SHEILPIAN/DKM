@@ -954,7 +954,8 @@ body {
 .maslam-device {
   width: 100%;
   max-width: 440px;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   background: #f6f8fb;
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 10px #1e293b, 0 0 0 12px #334155;
   display: flex;

@@ -261,7 +261,7 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
         </div>
 
         {/* Main Content Router */}
-        <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
+        <div style={{ flex: 1, position: 'relative', zIndex: 1, overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
           {currentScreen === 'home' && (
             <MaslamHome
               onNavigate={(screen) => setCurrentScreen(screen)}
