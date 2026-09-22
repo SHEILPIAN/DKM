@@ -280,7 +280,7 @@ export default function DkmApp() {
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${isMobileView ? 'mobile-container' : ''}`}>
       {/* ======================================================= */}
       {/* MODE UTAMA HP (MASLAM DKM MOBILE APPLICATION)           */}
       {/* ======================================================= */}
