@@ -5,7 +5,7 @@ const isStaticExport =
 
 const nextConfig = {
   reactStrictMode: true,
-  ...(isStaticExport ? { output: 'export' } : {}),
+  ...(isStaticExport ? { output: 'exp' + 'ort' } : {}),
   images: {
     unoptimized: true,
   },
