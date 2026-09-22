@@ -70,10 +70,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={() => setIsMobileView(true)}
             className={`switcher-btn ${isMobileView ? 'active' : ''}`}
-            title="Tampilan Jamaah (Mobile App Simulator)"
+            title="Tampilan Aplikasi HP Maslam DKM"
           >
             <Smartphone size={15} />
-            <span>Jamaah View</span>
+            <span>Aplikasi HP</span>
           </button>
         </div>
 

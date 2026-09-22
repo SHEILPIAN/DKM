@@ -142,3 +142,21 @@ export interface ZakatFitrahTrx {
   tanggal: string;
   noKupon: string;
 }
+
+export interface Warga {
+  id: number;
+  nama: string;
+  nik?: string;
+  noHp: string;
+  alamat: string;
+  rt: string;
+  rw: string;
+  gender: 'IKHWAN' | 'AKHWAT';
+  kategoriUmur: 'ANAK' | 'REMAJA' | 'DEWASA' | 'LANSIA';
+  umur: number;
+  isMustahik: boolean;
+  statusKeluarga: 'KEPALA_KELUARGA' | 'ISTRI' | 'ANAK' | 'LAINNYA';
+  pekerjaan?: string;
+  tanggalDaftar: string;
+}
+

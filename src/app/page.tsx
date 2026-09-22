@@ -20,6 +20,7 @@ import { SalarySlipModal } from '@/components/modules/hr/SalarySlipModal';
 import { JamaahMobileView } from '@/components/modules/jamaah/JamaahMobileView';
 import { AndroidAppModal } from '@/components/layout/AndroidAppModal';
 import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
+import { MaslamApp } from '@/components/maslam/MaslamApp';
 
 import {
   INITIAL_KATEGORI_KAS,
@@ -31,6 +32,7 @@ import {
   INITIAL_PEGAWAI,
   INITIAL_ABSENSI,
   INITIAL_SLIP_GAJI,
+  INITIAL_WARGA,
 } from '@/lib/mockData';
 
 import {
@@ -45,12 +47,13 @@ import {
   Absensi,
   SlipGaji,
   ZakatFitrahTrx,
+  Warga,
 } from '@/types/dkm';
 
 export default function DkmApp() {
-  // Global State
+  // Global State: Default to mobile HP Maslam view as requested
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [isMobileView, setIsMobileView] = useState<boolean>(false);
+  const [isMobileView, setIsMobileView] = useState<boolean>(true);
 
   // Data States
   const [kategoriKas, setKategoriKas] = useState<KategoriKas[]>(INITIAL_KATEGORI_KAS);
@@ -62,6 +65,7 @@ export default function DkmApp() {
   const [pegawai, setPegawai] = useState<Pegawai[]>(INITIAL_PEGAWAI);
   const [absensi, setAbsensi] = useState<Absensi[]>(INITIAL_ABSENSI);
   const [slipGaji, setSlipGaji] = useState<SlipGaji[]>(INITIAL_SLIP_GAJI);
+  const [warga, setWarga] = useState<Warga[]>(INITIAL_WARGA);
 
   // ZISWAF Stocks
   const [stokBerasKg, setStokBerasKg] = useState<number>(450.0);
@@ -259,56 +263,75 @@ export default function DkmApp() {
     );
   };
 
+  // -------------------------------------------------------------
+  // Modul 5 Handlers: Data Warga & Mustahik (Screenshot 3)
+  // -------------------------------------------------------------
+  const handleAddWarga = (newWarga: Omit<Warga, 'id' | 'tanggalDaftar'>) => {
+    const created: Warga = {
+      ...newWarga,
+      id: Date.now(),
+      tanggalDaftar: new Date().toISOString().split('T')[0],
+    };
+    setWarga((prev) => [created, ...prev]);
+  };
+
   // Counters
   const pendingBookingsCount = reservasi.filter((r) => r.status === 'PENDING').length;
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
 
   return (
     <div className="app-container">
-      {/* Sidebar Navigation */}
-      <Sidebar
-        activeTab={isMobileView ? 'jamaah' : activeTab}
-        setActiveTab={(tab) => {
-          if (tab === 'jamaah') {
-            setIsMobileView(true);
-          } else {
-            setIsMobileView(false);
-            setActiveTab(tab);
-          }
-        }}
-        pendingBookingsCount={pendingBookingsCount}
-        pendingSalaryCount={pendingSalaryCount}
-      />
-
-      {/* Main Content Wrapper */}
-      <div className="main-wrapper">
-        <Header
+      {/* ======================================================= */}
+      {/* MODE UTAMA HP (MASLAM DKM MOBILE APPLICATION)           */}
+      {/* ======================================================= */}
+      {isMobileView ? (
+        <MaslamApp
+          kategoriKas={kategoriKas}
+          transaksi={transaksi}
+          fasilitas={fasilitas}
+          reservasi={reservasi}
+          mustahiq={mustahiq}
+          hewanQurban={hewanQurban}
+          pegawai={pegawai}
+          absensi={absensi}
+          slipGaji={slipGaji}
+          warga={warga}
+          stokBerasKg={stokBerasKg}
+          danaZakatRp={danaZakatRp}
           onOpenCashier={() => setIsCashierOpen(true)}
-          isMobileView={isMobileView}
-          setIsMobileView={setIsMobileView}
+          onOpenBookingModal={handleOpenBookingForDate}
+          onOpenZakatModal={() => setIsZakatModalOpen(true)}
           onOpenAndroidModal={() => setIsAndroidModalOpen(true)}
+          onSwitchToDesktop={() => setIsMobileView(false)}
+          onToggleMustahiqDistribute={handleToggleMustahiqDistribute}
+          onRegisterShohibul={handleRegisterShohibul}
+          onAddAbsensi={handleAddAbsensi}
+          onApproveSalary={handleApproveAndPaySalary}
+          onAddWarga={handleAddWarga}
         />
+      ) : (
+        /* ===================================================== */
+        /* MODE ADMIN PORTAL DESKTOP (PC / LAYAR LEBAR)          */
+        /* ===================================================== */
+        <>
+          {/* Sidebar Navigation */}
+          <Sidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            pendingBookingsCount={pendingBookingsCount}
+            pendingSalaryCount={pendingSalaryCount}
+          />
 
-        <main className="page-content">
-          {/* ======================================================= */}
-          {/* MODE JAMAAH (MOBILE APP SIMULATOR)                      */}
-          {/* ======================================================= */}
-          {isMobileView ? (
-            <JamaahMobileView
-              kategoriKas={kategoriKas}
-              fasilitas={fasilitas}
-              onOpenQuickDonation={() => setIsCashierOpen(true)}
-              onOpenFacilityBooking={() => {
-                setIsMobileView(false);
-                setActiveTab('reservasi');
-              }}
-              onOpenZakatModal={() => setIsZakatModalOpen(true)}
+          {/* Main Content Wrapper */}
+          <div className="main-wrapper">
+            <Header
+              onOpenCashier={() => setIsCashierOpen(true)}
+              isMobileView={isMobileView}
+              setIsMobileView={setIsMobileView}
+              onOpenAndroidModal={() => setIsAndroidModalOpen(true)}
             />
-          ) : (
-            /* ===================================================== */
-            /* MODE ADMIN PORTAL DESKTOP                             */
-            /* ===================================================== */
-            <>
+
+            <main className="page-content">
               {/* TAB 1: DASHBOARD ANALITIK KEUANGAN */}
               {activeTab === 'dashboard' && (
                 <div>
@@ -459,10 +482,20 @@ export default function DkmApp() {
                   />
                 </div>
               )}
-            </>
-          )}
-        </main>
-      </div>
+            </main>
+          </div>
+
+          {/* MOBILE BOTTOM NAVIGATION BAR (Hanya di mode desktop simulator) */}
+          <MobileBottomNav
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            isMobileView={isMobileView}
+            setIsMobileView={setIsMobileView}
+            pendingBookingsCount={pendingBookingsCount}
+            pendingSalaryCount={pendingSalaryCount}
+          />
+        </>
+      )}
 
       {/* MODAL 1: Kasir Infaq Masuk / Keluar */}
       <CashierModal
@@ -494,16 +527,6 @@ export default function DkmApp() {
       <AndroidAppModal
         isOpen={isAndroidModalOpen}
         onClose={() => setIsAndroidModalOpen(false)}
-      />
-
-      {/* MOBILE BOTTOM NAVIGATION BAR (Untuk Smartphone Android) */}
-      <MobileBottomNav
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        isMobileView={isMobileView}
-        setIsMobileView={setIsMobileView}
-        pendingBookingsCount={pendingBookingsCount}
-        pendingSalaryCount={pendingSalaryCount}
       />
     </div>
   );
