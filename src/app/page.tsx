@@ -391,6 +391,29 @@ export default function DkmApp() {
     setInventoryList((prev) => prev.filter((i) => i.id !== id));
   };
 
+  // -------------------------------------------------------------
+  // Modul ZISWAF / Mustahiq Handlers
+  // -------------------------------------------------------------
+  const handleAddMustahiq = (newM: Omit<Mustahiq, 'id'>) => {
+    const created: Mustahiq = { ...newM, id: Date.now() };
+    setMustahiq((prev) => [created, ...prev]);
+  };
+
+  const handleUpdateMustahiq = (updated: Mustahiq) => {
+    setMustahiq((prev) =>
+      prev.map((m) => (m.id === updated.id ? updated : m))
+    );
+  };
+
+  const handleDeleteMustahiq = (id: number) => {
+    setMustahiq((prev) => prev.filter((m) => m.id !== id));
+  };
+
+  const handleUpdateStokZiswaf = (berasKg: number, danaRp: number) => {
+    setStokBerasKg(berasKg);
+    setDanaZakatRp(danaRp);
+  };
+
   // Counters
   const pendingBookingsCount = reservasi.filter((r) => r.status === 'PENDING').length;
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
@@ -447,6 +470,10 @@ export default function DkmApp() {
           onAddInventory={handleAddInventory}
           onUpdateInventory={handleUpdateInventory}
           onDeleteInventory={handleDeleteInventory}
+          onAddMustahiq={handleAddMustahiq}
+          onUpdateMustahiq={handleUpdateMustahiq}
+          onDeleteMustahiq={handleDeleteMustahiq}
+          onUpdateStokZiswaf={handleUpdateStokZiswaf}
         />
       ) : (
         /* ===================================================== */

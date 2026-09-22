@@ -92,6 +92,10 @@ interface MaslamAppProps {
   onAddInventory?: (item: Omit<InventoryItem, 'id'>) => void;
   onUpdateInventory?: (item: InventoryItem) => void;
   onDeleteInventory?: (id: number) => void;
+  onAddMustahiq?: (m: Omit<Mustahiq, 'id'>) => void;
+  onUpdateMustahiq?: (m: Mustahiq) => void;
+  onDeleteMustahiq?: (id: number) => void;
+  onUpdateStokZiswaf?: (berasKg: number, danaRp: number) => void;
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
@@ -140,6 +144,10 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onAddInventory,
   onUpdateInventory,
   onDeleteInventory,
+  onAddMustahiq,
+  onUpdateMustahiq,
+  onDeleteMustahiq,
+  onUpdateStokZiswaf,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<string>('home');
   const [isQrScanOpen, setIsQrScanOpen] = useState<boolean>(false);
@@ -208,6 +216,10 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               onToggleDistribute={onToggleMustahiqDistribute}
               stokBerasKg={stokBerasKg}
               danaZakatRp={danaZakatRp}
+              onAddMustahiq={onAddMustahiq}
+              onUpdateMustahiq={onUpdateMustahiq}
+              onDeleteMustahiq={onDeleteMustahiq}
+              onUpdateStokZiswaf={onUpdateStokZiswaf}
             />
           )}
 
