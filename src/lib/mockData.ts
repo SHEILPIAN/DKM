@@ -14,6 +14,7 @@ import {
   ProfilLembaga,
   PengurusLembaga,
   RekeningLembaga,
+  Kegiatan,
 } from '@/types/dkm';
 
 export const INITIAL_USERS: User[] = [
@@ -655,5 +656,49 @@ export const INITIAL_REKENING_LEMBAGA: RekeningLembaga[] = [
     atasNama: 'YAYASAN AL-MUHAJIRIN BEKASI',
   },
 ];
+
+export const INITIAL_KEGIATAN: Kegiatan[] = [
+  {
+    id: 1,
+    judul: 'Kajian Subuh Berjamaah & Sarapan Bersama',
+    narasumber: 'Ustadz M. Syakir, Lc.',
+    waktu: 'Setiap Ahad Pagi, Ba\'da Subuh',
+    lokasi: 'Ruang Utama AL-Muhajirin',
+    kategori: 'RUTIN MINGGUAN',
+    deskripsi: 'Kajian kitab Riyadhus Shalihin dilanjutkan sarapan bersama jamaah.',
+    kontakPIC: '0812-1122-3344',
+  },
+  {
+    id: 2,
+    judul: 'Majelis Taklim Muslimah & Tahsin Al-Qur\'an',
+    narasumber: 'Ustadzah Hj. Faridah',
+    waktu: 'Setiap Selasa, 09.00 - 11.30 WIB',
+    lokasi: 'Aula Serbaguna Lantai 2',
+    kategori: 'MUSLIMAH',
+    deskripsi: 'Bimbingan tahsin makhorijul huruf dan fikih wanita.',
+    kontakPIC: '0813-2233-4455',
+  },
+  {
+    id: 3,
+    judul: 'Pelatihan Qiro\'ah & Hadrah Remaja Masjid',
+    narasumber: 'Tim Remaja DKM',
+    waktu: 'Setiap Sabtu Malam, Ba\'da Isya',
+    lokasi: 'Serambi Timur AL-Muhajirin',
+    kategori: 'REMAJA',
+    deskripsi: 'Latihan seni hadrah banjari dan qiroah murattal santri remaja.',
+    kontakPIC: '0857-3344-5566',
+  },
+  {
+    id: 4,
+    judul: 'Khotbah & Shalat Jumat Berjamaah',
+    narasumber: 'Habib Ali Al-Kaff',
+    waktu: 'Setiap Jumat, 11.45 WIB',
+    lokasi: 'Ruang Shalat Utama',
+    kategori: 'SHALAT JUMAT',
+    deskripsi: 'Shalat Jumat berjamaah dengan khutbah tematik seputar ukhuwah islamiyah.',
+    kontakPIC: '0818-4455-6677',
+  },
+];
+
 
 

@@ -36,6 +36,7 @@ import {
   INITIAL_PROFIL_LEMBAGA,
   INITIAL_PENGURUS_LEMBAGA,
   INITIAL_REKENING_LEMBAGA,
+  INITIAL_KEGIATAN,
 } from '@/lib/mockData';
 
 import {
@@ -54,6 +55,7 @@ import {
   ProfilLembaga,
   PengurusLembaga,
   RekeningLembaga,
+  Kegiatan,
 } from '@/types/dkm';
 
 export default function DkmApp() {
@@ -75,6 +77,7 @@ export default function DkmApp() {
   const [profilLembaga, setProfilLembaga] = useState<ProfilLembaga>(INITIAL_PROFIL_LEMBAGA);
   const [pengurusLembaga, setPengurusLembaga] = useState<PengurusLembaga[]>(INITIAL_PENGURUS_LEMBAGA);
   const [rekeningLembaga, setRekeningLembaga] = useState<RekeningLembaga[]>(INITIAL_REKENING_LEMBAGA);
+  const [kegiatanList, setKegiatanList] = useState<Kegiatan[]>(INITIAL_KEGIATAN);
 
   // ZISWAF Stocks
   const [stokBerasKg, setStokBerasKg] = useState<number>(450.0);
@@ -321,6 +324,24 @@ export default function DkmApp() {
     setRekeningLembaga((prev) => prev.filter((item) => item.id !== id));
   };
 
+  // -------------------------------------------------------------
+  // Modul Agenda & Kegiatan Handlers
+  // -------------------------------------------------------------
+  const handleAddKegiatan = (k: Omit<Kegiatan, 'id'>) => {
+    const created: Kegiatan = { ...k, id: Date.now() };
+    setKegiatanList((prev) => [created, ...prev]);
+  };
+
+  const handleUpdateKegiatan = (k: Kegiatan) => {
+    setKegiatanList((prev) =>
+      prev.map((item) => (item.id === k.id ? k : item))
+    );
+  };
+
+  const handleDeleteKegiatan = (id: number) => {
+    setKegiatanList((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // Counters
   const pendingBookingsCount = reservasi.filter((r) => r.status === 'PENDING').length;
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
@@ -364,6 +385,10 @@ export default function DkmApp() {
           onAddRekeningLembaga={handleAddRekeningLembaga}
           onUpdateRekeningLembaga={handleUpdateRekeningLembaga}
           onDeleteRekeningLembaga={handleDeleteRekeningLembaga}
+          kegiatanList={kegiatanList}
+          onAddKegiatan={handleAddKegiatan}
+          onUpdateKegiatan={handleUpdateKegiatan}
+          onDeleteKegiatan={handleDeleteKegiatan}
         />
       ) : (
         /* ===================================================== */

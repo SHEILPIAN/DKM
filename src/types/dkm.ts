@@ -185,3 +185,15 @@ export interface RekeningLembaga {
   noRekening: string;
   atasNama: string;
 }
+
+export interface Kegiatan {
+  id: number;
+  judul: string;
+  narasumber: string;
+  waktu: string;
+  lokasi: string;
+  kategori: string;
+  deskripsi?: string;
+  kontakPIC?: string;
+}
+

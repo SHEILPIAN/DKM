@@ -25,6 +25,7 @@ import {
   ProfilLembaga,
   PengurusLembaga,
   RekeningLembaga,
+  Kegiatan,
 } from '@/types/dkm';
 
 import { MaslamHome } from './MaslamHome';
@@ -77,6 +78,10 @@ interface MaslamAppProps {
   onAddRekeningLembaga?: (item: Omit<RekeningLembaga, 'id'>) => void;
   onUpdateRekeningLembaga?: (item: RekeningLembaga) => void;
   onDeleteRekeningLembaga?: (id: number) => void;
+  kegiatanList?: Kegiatan[];
+  onAddKegiatan?: (k: Omit<Kegiatan, 'id'>) => void;
+  onUpdateKegiatan?: (k: Kegiatan) => void;
+  onDeleteKegiatan?: (id: number) => void;
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
@@ -112,6 +117,10 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onAddRekeningLembaga,
   onUpdateRekeningLembaga,
   onDeleteRekeningLembaga,
+  kegiatanList,
+  onAddKegiatan,
+  onUpdateKegiatan,
+  onDeleteKegiatan,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<string>('home');
   const [isQrScanOpen, setIsQrScanOpen] = useState<boolean>(false);
@@ -214,7 +223,13 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
           )}
 
           {currentScreen === 'kegiatan' && (
-            <MaslamKegiatan onBack={() => setCurrentScreen('home')} />
+            <MaslamKegiatan
+              onBack={() => setCurrentScreen('home')}
+              kegiatanList={kegiatanList}
+              onAddKegiatan={onAddKegiatan}
+              onUpdateKegiatan={onUpdateKegiatan}
+              onDeleteKegiatan={onDeleteKegiatan}
+            />
           )}
 
           {currentScreen === 'inventory' && (
