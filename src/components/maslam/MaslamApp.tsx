@@ -22,6 +22,9 @@ import {
   Absensi,
   SlipGaji,
   Warga,
+  ProfilLembaga,
+  PengurusLembaga,
+  RekeningLembaga,
 } from '@/types/dkm';
 
 import { MaslamHome } from './MaslamHome';
@@ -64,6 +67,16 @@ interface MaslamAppProps {
   onAddAbsensi: (absenData: Omit<Absensi, 'id'>) => void;
   onApproveSalary: (slipId: number) => void;
   onAddWarga: (w: Omit<Warga, 'id' | 'tanggalDaftar'>) => void;
+  profilLembaga?: ProfilLembaga;
+  onUpdateProfilLembaga?: (p: ProfilLembaga) => void;
+  pengurusLembaga?: PengurusLembaga[];
+  onAddPengurusLembaga?: (item: Omit<PengurusLembaga, 'id'>) => void;
+  onUpdatePengurusLembaga?: (item: PengurusLembaga) => void;
+  onDeletePengurusLembaga?: (id: number) => void;
+  rekeningLembaga?: RekeningLembaga[];
+  onAddRekeningLembaga?: (item: Omit<RekeningLembaga, 'id'>) => void;
+  onUpdateRekeningLembaga?: (item: RekeningLembaga) => void;
+  onDeleteRekeningLembaga?: (id: number) => void;
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
@@ -89,6 +102,16 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onAddAbsensi,
   onApproveSalary,
   onAddWarga,
+  profilLembaga,
+  onUpdateProfilLembaga,
+  pengurusLembaga,
+  onAddPengurusLembaga,
+  onUpdatePengurusLembaga,
+  onDeletePengurusLembaga,
+  rekeningLembaga,
+  onAddRekeningLembaga,
+  onUpdateRekeningLembaga,
+  onDeleteRekeningLembaga,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<string>('home');
   const [isQrScanOpen, setIsQrScanOpen] = useState<boolean>(false);
@@ -175,7 +198,19 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
           )}
 
           {currentScreen === 'lembaga' && (
-            <MaslamLembaga onBack={() => setCurrentScreen('home')} />
+            <MaslamLembaga
+              onBack={() => setCurrentScreen('home')}
+              profil={profilLembaga}
+              onUpdateProfil={onUpdateProfilLembaga}
+              pengurus={pengurusLembaga}
+              onAddPengurus={onAddPengurusLembaga}
+              onUpdatePengurus={onUpdatePengurusLembaga}
+              onDeletePengurus={onDeletePengurusLembaga}
+              rekening={rekeningLembaga}
+              onAddRekening={onAddRekeningLembaga}
+              onUpdateRekening={onUpdateRekeningLembaga}
+              onDeleteRekening={onDeleteRekeningLembaga}
+            />
           )}
 
           {currentScreen === 'kegiatan' && (

@@ -33,6 +33,9 @@ import {
   INITIAL_ABSENSI,
   INITIAL_SLIP_GAJI,
   INITIAL_WARGA,
+  INITIAL_PROFIL_LEMBAGA,
+  INITIAL_PENGURUS_LEMBAGA,
+  INITIAL_REKENING_LEMBAGA,
 } from '@/lib/mockData';
 
 import {
@@ -48,6 +51,9 @@ import {
   SlipGaji,
   ZakatFitrahTrx,
   Warga,
+  ProfilLembaga,
+  PengurusLembaga,
+  RekeningLembaga,
 } from '@/types/dkm';
 
 export default function DkmApp() {
@@ -66,6 +72,9 @@ export default function DkmApp() {
   const [absensi, setAbsensi] = useState<Absensi[]>(INITIAL_ABSENSI);
   const [slipGaji, setSlipGaji] = useState<SlipGaji[]>(INITIAL_SLIP_GAJI);
   const [warga, setWarga] = useState<Warga[]>(INITIAL_WARGA);
+  const [profilLembaga, setProfilLembaga] = useState<ProfilLembaga>(INITIAL_PROFIL_LEMBAGA);
+  const [pengurusLembaga, setPengurusLembaga] = useState<PengurusLembaga[]>(INITIAL_PENGURUS_LEMBAGA);
+  const [rekeningLembaga, setRekeningLembaga] = useState<RekeningLembaga[]>(INITIAL_REKENING_LEMBAGA);
 
   // ZISWAF Stocks
   const [stokBerasKg, setStokBerasKg] = useState<number>(450.0);
@@ -275,6 +284,43 @@ export default function DkmApp() {
     setWarga((prev) => [created, ...prev]);
   };
 
+  // -------------------------------------------------------------
+  // Modul Data Lembaga Handlers: Profil, Pengurus, Rekening
+  // -------------------------------------------------------------
+  const handleUpdateProfilLembaga = (p: ProfilLembaga) => {
+    setProfilLembaga(p);
+  };
+
+  const handleAddPengurusLembaga = (p: Omit<PengurusLembaga, 'id'>) => {
+    const created: PengurusLembaga = { ...p, id: Date.now() };
+    setPengurusLembaga((prev) => [...prev, created]);
+  };
+
+  const handleUpdatePengurusLembaga = (p: PengurusLembaga) => {
+    setPengurusLembaga((prev) =>
+      prev.map((item) => (item.id === p.id ? p : item))
+    );
+  };
+
+  const handleDeletePengurusLembaga = (id: number) => {
+    setPengurusLembaga((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleAddRekeningLembaga = (r: Omit<RekeningLembaga, 'id'>) => {
+    const created: RekeningLembaga = { ...r, id: Date.now() };
+    setRekeningLembaga((prev) => [...prev, created]);
+  };
+
+  const handleUpdateRekeningLembaga = (r: RekeningLembaga) => {
+    setRekeningLembaga((prev) =>
+      prev.map((item) => (item.id === r.id ? r : item))
+    );
+  };
+
+  const handleDeleteRekeningLembaga = (id: number) => {
+    setRekeningLembaga((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // Counters
   const pendingBookingsCount = reservasi.filter((r) => r.status === 'PENDING').length;
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
@@ -308,6 +354,16 @@ export default function DkmApp() {
           onAddAbsensi={handleAddAbsensi}
           onApproveSalary={handleApproveAndPaySalary}
           onAddWarga={handleAddWarga}
+          profilLembaga={profilLembaga}
+          onUpdateProfilLembaga={handleUpdateProfilLembaga}
+          pengurusLembaga={pengurusLembaga}
+          onAddPengurusLembaga={handleAddPengurusLembaga}
+          onUpdatePengurusLembaga={handleUpdatePengurusLembaga}
+          onDeletePengurusLembaga={handleDeletePengurusLembaga}
+          rekeningLembaga={rekeningLembaga}
+          onAddRekeningLembaga={handleAddRekeningLembaga}
+          onUpdateRekeningLembaga={handleUpdateRekeningLembaga}
+          onDeleteRekeningLembaga={handleDeleteRekeningLembaga}
         />
       ) : (
         /* ===================================================== */

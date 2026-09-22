@@ -160,3 +160,28 @@ export interface Warga {
   tanggalDaftar: string;
 }
 
+export interface ProfilLembaga {
+  nama: string;
+  yayasan: string;
+  periode: string;
+  alamat: string;
+  telepon: string;
+  email: string;
+  deskripsi?: string;
+  logoUrl?: string;
+}
+
+export interface PengurusLembaga {
+  id: number;
+  role: string;
+  nama: string;
+  noHp?: string;
+  icon?: string;
+}
+
+export interface RekeningLembaga {
+  id: number;
+  bank: string;
+  noRekening: string;
+  atasNama: string;
+}

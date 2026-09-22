@@ -11,6 +11,9 @@ import {
   ZakatFitrahTrx,
   User,
   Warga,
+  ProfilLembaga,
+  PengurusLembaga,
+  RekeningLembaga,
 } from '@/types/dkm';
 
 export const INITIAL_USERS: User[] = [
@@ -617,4 +620,40 @@ export const INITIAL_WARGA: Warga[] = [
     tanggalDaftar: '2026-04-02',
   },
 ];
+
+export const INITIAL_PROFIL_LEMBAGA: ProfilLembaga = {
+  nama: 'AL-Muhajirin',
+  yayasan: 'Yayasan Kemakmuran Umat Kayuringin Jaya',
+  periode: 'Periode 2024 - 2028',
+  alamat: 'Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi',
+  telepon: '0812-9876-5432',
+  email: 'dkm.almuhajirin.bekasi@gmail.com',
+  deskripsi: 'Dewan Kemakmuran Masjid (DKM) yang berkomitmen membina umat melalui dakwah, pendidikan, sosial, dan transparansi keuangan berbasis digital.',
+  logoUrl: '/logo.png',
+};
+
+export const INITIAL_PENGURUS_LEMBAGA: PengurusLembaga[] = [
+  { id: 1, role: 'Ketua DKM', nama: 'H. Ahmad Dahlan', noHp: '081211223344', icon: '👤' },
+  { id: 2, role: 'Wakil Ketua', nama: 'H. Bambang Soetrisno', noHp: '081322334455', icon: '👤' },
+  { id: 3, role: 'Sekretaris', nama: 'Fian Tampan (Piket)', noHp: '085733445566', icon: '📝' },
+  { id: 4, role: 'Bendahara Umum', nama: 'Ustadz Ridwan, S.E', noHp: '081844556677', icon: '💰' },
+  { id: 5, role: 'Ketua Bidang ZISWAF', nama: 'H. Suherman', noHp: '085255667788', icon: '🤝' },
+  { id: 6, role: 'Imam Rawatib', nama: 'Ustadz M. Syakir, Lc.', noHp: '081366778899', icon: '🕌' },
+];
+
+export const INITIAL_REKENING_LEMBAGA: RekeningLembaga[] = [
+  {
+    id: 1,
+    bank: 'BANK SYARIAH INDONESIA (BSI)',
+    noRekening: '714-902-1882',
+    atasNama: 'DKM AL-MUHAJIRIN BEKASI',
+  },
+  {
+    id: 2,
+    bank: 'BANK MUAMALAT',
+    noRekening: '348-001-9281',
+    atasNama: 'YAYASAN AL-MUHAJIRIN BEKASI',
+  },
+];
+
 
