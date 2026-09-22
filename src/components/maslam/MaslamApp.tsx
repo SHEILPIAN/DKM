@@ -26,6 +26,7 @@ import {
   PengurusLembaga,
   RekeningLembaga,
   Kegiatan,
+  InventoryItem,
 } from '@/types/dkm';
 
 import { MaslamHome } from './MaslamHome';
@@ -87,6 +88,10 @@ interface MaslamAppProps {
   onAddFasilitas?: (f: Omit<Fasilitas, 'id'>) => void;
   onUpdateFasilitas?: (f: Fasilitas) => void;
   onDeleteFasilitas?: (id: number) => void;
+  inventoryList?: InventoryItem[];
+  onAddInventory?: (item: Omit<InventoryItem, 'id'>) => void;
+  onUpdateInventory?: (item: InventoryItem) => void;
+  onDeleteInventory?: (id: number) => void;
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
@@ -131,6 +136,10 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onAddFasilitas,
   onUpdateFasilitas,
   onDeleteFasilitas,
+  inventoryList,
+  onAddInventory,
+  onUpdateInventory,
+  onDeleteInventory,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<string>('home');
   const [isQrScanOpen, setIsQrScanOpen] = useState<boolean>(false);
@@ -248,7 +257,13 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
           )}
 
           {currentScreen === 'inventory' && (
-            <MaslamInventory onBack={() => setCurrentScreen('home')} />
+            <MaslamInventory
+              onBack={() => setCurrentScreen('home')}
+              inventoryList={inventoryList}
+              onAddInventory={onAddInventory}
+              onUpdateInventory={onUpdateInventory}
+              onDeleteInventory={onDeleteInventory}
+            />
           )}
 
           {currentScreen === 'idulfitri' && (

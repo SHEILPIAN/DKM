@@ -15,6 +15,7 @@ import {
   PengurusLembaga,
   RekeningLembaga,
   Kegiatan,
+  InventoryItem,
 } from '@/types/dkm';
 
 export const INITIAL_USERS: User[] = [
@@ -699,6 +700,17 @@ export const INITIAL_KEGIATAN: Kegiatan[] = [
     kontakPIC: '0818-4455-6677',
   },
 ];
+
+export const INITIAL_INVENTORY: InventoryItem[] = [
+  { id: 1, nama: 'Genset Silent 5000 Watt', jumlah: '1 Unit', kondisi: 'BAIK', lokasi: 'Gudang Belakang', kategori: 'Elektronik & Kelistrikan' },
+  { id: 2, nama: 'Karpet Shaf Turkey Tebal 14mm', jumlah: '18 Gulung', kondisi: 'BAIK', lokasi: 'Ruang Utama', kategori: 'Ibadah & Karpet' },
+  { id: 3, nama: 'Sound System Wireless Mixer 16 Ch', jumlah: '1 Set', kondisi: 'BAIK', lokasi: 'Ruang Sound', kategori: 'Elektronik & Sound' },
+  { id: 4, nama: 'Microphone Shure Beta 58A', jumlah: '6 Pcs', kondisi: 'BAIK', lokasi: 'Mimbar & Muadzin', kategori: 'Elektronik & Sound' },
+  { id: 5, nama: 'Tenda Sarnafil 4x4 Meter', jumlah: '2 Set', kondisi: 'BAIK', lokasi: 'Gudang Tenda', kategori: 'Tenda & Outdoor' },
+  { id: 6, nama: 'Kursi Lipat Futura', jumlah: '150 Unit', kondisi: 'BAIK', lokasi: 'Aula Lantai 2', kategori: 'Perlengkapan & Furnitur' },
+  { id: 7, nama: 'Keranda Jenazah & Kain Penutup', jumlah: '1 Set', kondisi: 'BAIK', lokasi: 'Ruang Jenazah', kategori: 'Sosial & Fardhu Kifayah' },
+];
+
 
 
 

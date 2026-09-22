@@ -37,6 +37,7 @@ import {
   INITIAL_PENGURUS_LEMBAGA,
   INITIAL_REKENING_LEMBAGA,
   INITIAL_KEGIATAN,
+  INITIAL_INVENTORY,
 } from '@/lib/mockData';
 
 import {
@@ -56,6 +57,7 @@ import {
   PengurusLembaga,
   RekeningLembaga,
   Kegiatan,
+  InventoryItem,
 } from '@/types/dkm';
 
 export default function DkmApp() {
@@ -78,6 +80,7 @@ export default function DkmApp() {
   const [pengurusLembaga, setPengurusLembaga] = useState<PengurusLembaga[]>(INITIAL_PENGURUS_LEMBAGA);
   const [rekeningLembaga, setRekeningLembaga] = useState<RekeningLembaga[]>(INITIAL_REKENING_LEMBAGA);
   const [kegiatanList, setKegiatanList] = useState<Kegiatan[]>(INITIAL_KEGIATAN);
+  const [inventoryList, setInventoryList] = useState<InventoryItem[]>(INITIAL_INVENTORY);
 
   // ZISWAF Stocks
   const [stokBerasKg, setStokBerasKg] = useState<number>(450.0);
@@ -370,6 +373,24 @@ export default function DkmApp() {
     setKegiatanList((prev) => prev.filter((item) => item.id !== id));
   };
 
+  // -------------------------------------------------------------
+  // Modul Inventory & Sarpras Handlers
+  // -------------------------------------------------------------
+  const handleAddInventory = (item: Omit<InventoryItem, 'id'>) => {
+    const created: InventoryItem = { ...item, id: Date.now() };
+    setInventoryList((prev) => [created, ...prev]);
+  };
+
+  const handleUpdateInventory = (item: InventoryItem) => {
+    setInventoryList((prev) =>
+      prev.map((i) => (i.id === item.id ? item : i))
+    );
+  };
+
+  const handleDeleteInventory = (id: number) => {
+    setInventoryList((prev) => prev.filter((i) => i.id !== id));
+  };
+
   // Counters
   const pendingBookingsCount = reservasi.filter((r) => r.status === 'PENDING').length;
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
@@ -422,6 +443,10 @@ export default function DkmApp() {
           onAddFasilitas={handleAddFasilitas}
           onUpdateFasilitas={handleUpdateFasilitas}
           onDeleteFasilitas={handleDeleteFasilitas}
+          inventoryList={inventoryList}
+          onAddInventory={handleAddInventory}
+          onUpdateInventory={handleUpdateInventory}
+          onDeleteInventory={handleDeleteInventory}
         />
       ) : (
         /* ===================================================== */

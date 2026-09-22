@@ -197,3 +197,14 @@ export interface Kegiatan {
   kontakPIC?: string;
 }
 
+export interface InventoryItem {
+  id: number;
+  nama: string;
+  jumlah: string;
+  kondisi: 'BAIK' | 'PERLU PERBAIKAN' | 'RUSAK';
+  lokasi: string;
+  kategori?: string;
+  keterangan?: string;
+}
+
+
