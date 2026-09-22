@@ -93,7 +93,7 @@ export const MaslamIdulAdha: React.FC<MaslamIdulAdhaProps> = ({
             Idul Adha & Qurban 1447H
           </h2>
           <p style={{ fontSize: '0.78rem', opacity: 0.9, marginTop: 2, margin: 0 }}>
-            Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+            AL-MUHAJIRIN KAYURINGIN BEKASI
           </p>
         </div>
       </div>

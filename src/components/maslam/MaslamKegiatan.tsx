@@ -13,7 +13,7 @@ export const MaslamKegiatan: React.FC<MaslamKegiatanProps> = ({ onBack }) => {
       judul: 'Kajian Subuh Berjamaah & Sarapan Bersama',
       narasumber: 'Ustadz M. Syakir, Lc.',
       waktu: 'Setiap Ahad Pagi, Ba\'da Subuh',
-      lokasi: 'Ruang Utama Masjid Al-Muhajirin',
+      lokasi: 'Ruang Utama AL-Muhajirin',
       kategori: 'RUTIN MINGGUAN',
     },
     {
@@ -34,7 +34,7 @@ export const MaslamKegiatan: React.FC<MaslamKegiatanProps> = ({ onBack }) => {
       judul: 'Khotbah & Shalat Jumat Berjamaah',
       narasumber: 'Habib Ali Al-Kaff',
       waktu: 'Jumat, 11.45 WIB',
-      lokasi: 'Masjid Al-Muhajirin',
+      lokasi: 'AL-Muhajirin',
       kategori: 'SHALAT JUMAT',
     },
   ];
@@ -72,7 +72,7 @@ export const MaslamKegiatan: React.FC<MaslamKegiatanProps> = ({ onBack }) => {
           Jadwal Kegiatan
         </h2>
         <p style={{ fontSize: '0.78rem', opacity: 0.9, marginTop: 2, margin: 0 }}>
-          Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+          AL-MUHAJIRIN KAYURINGIN BEKASI
         </p>
       </div>
 

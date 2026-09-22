@@ -69,7 +69,7 @@ export const MaslamKeuangan: React.FC<MaslamKeuanganProps> = ({
 
         <div className="maslam-page-title-group">
           <h2>Laporan Keuangan</h2>
-          <p>Masjid AL-MUHAJIRIN KAYURINGIN BEKASI</p>
+          <p>AL-MUHAJIRIN KAYURINGIN BEKASI</p>
         </div>
       </div>
 

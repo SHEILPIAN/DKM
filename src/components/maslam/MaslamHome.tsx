@@ -47,7 +47,7 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
     },
     {
       id: 2,
-      title: 'INFAQ & SEDEKAH QRIS DIGITAL MASJID AL-MUHAJIRIN',
+      title: 'INFAQ & SEDEKAH QRIS DIGITAL AL-MUHAJIRIN',
       subtitle: 'Salurkan sedekah subuh dan infaq operasional masjid langsung lewat QRIS.',
       tag: 'Infaq Digital',
       bg: 'linear-gradient(135deg, #dcfce7 0%, #a7f3d0 50%, #10b981 100%)',
@@ -144,7 +144,7 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.png"
-              alt="Logo Masjid Al-Muhajirin"
+              alt="Logo AL-Muhajirin"
               className="maslam-logo-img"
             />
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -156,7 +156,7 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
           <button
             type="button"
             className="maslam-bell-btn"
-            onClick={() => alert('Notifikasi DKM Al-Muhajirin: 1 Pengajuan Reservasi baru & 3 Slip Gaji menunggu approval.')}
+            onClick={() => alert('Notifikasi DKM AL-Muhajirin: 1 Pengajuan Reservasi baru & 3 Slip Gaji menunggu approval.')}
           >
             <Bell size={18} />
             <span className="maslam-bell-dot" />
@@ -209,7 +209,7 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
           </p>
 
           <div className="maslam-banner-overlay">
-            Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+            AL-MUHAJIRIN KAYURINGIN BEKASI
           </div>
         </div>
 

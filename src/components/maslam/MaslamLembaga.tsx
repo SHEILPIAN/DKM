@@ -57,7 +57,7 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({ onBack }) => {
         </div>
         <div>
           <h2 style={{ fontSize: '1.45rem', fontWeight: 800, margin: 0 }}>
-            Masjid Al-Muhajirin
+            AL-Muhajirin
           </h2>
           <p style={{ fontSize: '0.78rem', opacity: 0.9, marginTop: 2, margin: 0 }}>
             Dewan Kemakmuran Masjid (DKM) Periode 2024 - 2028
@@ -80,7 +80,7 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({ onBack }) => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
-            alt="Logo Al-Muhajirin"
+            alt="Logo AL-Muhajirin"
             style={{
               width: 80,
               height: 80,
@@ -91,7 +91,7 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({ onBack }) => {
             }}
           />
           <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>
-            MASJID AL-MUHAJIRIN
+            AL-MUHAJIRIN
           </h3>
           <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: 4, margin: 0 }}>
             Yayasan Kemakmuran Umat Kayuringin Jaya
@@ -180,7 +180,7 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({ onBack }) => {
                   714-902-1882
                 </div>
                 <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 2 }}>
-                  a.n. DKM MASJID AL-MUHAJIRIN BEKASI
+                  a.n. DKM AL-MUHAJIRIN BEKASI
                 </div>
               </div>
               <button

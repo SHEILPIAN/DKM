@@ -69,7 +69,7 @@ export const MaslamAset: React.FC<MaslamAsetProps> = ({
             Aset & Aula DKM
           </h2>
           <p style={{ fontSize: '0.78rem', opacity: 0.9, marginTop: 2, margin: 0 }}>
-            Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+            AL-MUHAJIRIN KAYURINGIN BEKASI
           </p>
         </div>
       </div>

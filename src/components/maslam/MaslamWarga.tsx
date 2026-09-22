@@ -194,7 +194,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               margin: 0,
             }}
           >
-            Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+            AL-MUHAJIRIN KAYURINGIN BEKASI
           </p>
         </div>
       </div>
@@ -972,7 +972,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             </div>
             <div className="modal-body" style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.6 }}>
               <p style={{ marginBottom: 10 }}>
-                <strong>Sistem Informasi Warga DKM Al-Muhajirin</strong> digunakan untuk mencatat basis data jamaah sekitar masjid di lingkungan Perumnas 2 Kayuringin Jaya Bekasi.
+                <strong>Sistem Informasi Warga DKM AL-Muhajirin</strong> digunakan untuk mencatat basis data jamaah sekitar masjid di lingkungan Perumnas 2 Kayuringin Jaya Bekasi.
               </p>
               <ul style={{ paddingLeft: 18, marginBottom: 12 }}>
                 <li>Pemetaan demografi jamaah (Ikhwan/Akhwat & kelompok usia).</li>
