@@ -67,12 +67,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <div className="mosque-icon-badge">
-          <Landmark size={24} />
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            background: '#ffffff',
+            border: '1.5px solid var(--border-emerald)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 3,
+            boxShadow: 'var(--shadow-sm)',
+            flexShrink: 0,
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="Logo Masjid Al-Muhajirin"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
         </div>
         <div className="sidebar-title">
-          <h1>DKM AL-IKHLAS</h1>
-          <p>Sistem Tata Kelola Masjid</p>
+          <h1 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--primary-dark)', lineHeight: 1.15 }}>
+            AL-MUHAJIRIN
+          </h1>
+          <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', lineHeight: 1.25, marginTop: 2 }}>
+            Jl. Maskoki Raya, Bekasi
+          </p>
         </div>
       </div>
 

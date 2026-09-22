@@ -223,10 +223,23 @@ export const SalarySlipModal: React.FC<SalarySlipModalProps> = ({
                 }}
               >
                 <div style={{ textAlign: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: 12, marginBottom: 14 }}>
-                  <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary-dark)' }}>
-                    DKM MASJID JAMI&apos; AL-IKHLAS
-                  </h4>
-                  <p style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 4 }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/logo.png"
+                      alt="Logo Masjid Al-Muhajirin"
+                      style={{ width: 38, height: 38, objectFit: 'contain' }}
+                    />
+                    <div style={{ textAlign: 'left' }}>
+                      <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--primary-dark)', margin: 0 }}>
+                        DKM MASJID AL-MUHAJIRIN
+                      </h4>
+                      <p style={{ fontSize: '0.65rem', color: '#64748b', margin: 0 }}>
+                        Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi
+                      </p>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: '0.75rem', color: '#047857', fontWeight: 600, marginTop: 4 }}>
                     Surat Keterangan Pembayaran Kafalah Khidmah Petugas
                   </p>
                 </div>

@@ -7,33 +7,33 @@ async function main() {
 
   // 1. Users
   const userKetua = await prisma.user.upsert({
-    where: { email: 'ketua@alikhlas.org' },
+    where: { email: 'ketua@almuhajirin.org' },
     update: {},
     create: {
       nama: 'H. Ahmad Dahlan',
-      email: 'ketua@alikhlas.org',
+      email: 'ketua@almuhajirin.org',
       password: '$2a$12$eXampleHashedPasswordKetuaDKM',
       role: 'KETUA_DKM',
     },
   });
 
   const userBendahara = await prisma.user.upsert({
-    where: { email: 'bendahara@alikhlas.org' },
+    where: { email: 'bendahara@almuhajirin.org' },
     update: {},
     create: {
       nama: 'Ustadz Ridwan, S.E',
-      email: 'bendahara@alikhlas.org',
+      email: 'bendahara@almuhajirin.org',
       password: '$2a$12$eXampleHashedPasswordBendahara',
       role: 'BENDAHARA',
     },
   });
 
   const userPiket = await prisma.user.upsert({
-    where: { email: 'piket@alikhlas.org' },
+    where: { email: 'piket@almuhajirin.org' },
     update: {},
     create: {
       nama: 'Fian Tampan',
-      email: 'piket@alikhlas.org',
+      email: 'piket@almuhajirin.org',
       password: '$2a$12$eXampleHashedPasswordPiket',
       role: 'PIKET',
     },

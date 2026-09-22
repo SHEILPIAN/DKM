@@ -319,12 +319,30 @@ export const ZakatInputModal: React.FC<ZakatInputModalProps> = ({
                 BUKTI SERAH TERIMA ZAKAT DIGITAL
               </div>
 
-              <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-dark)', marginBottom: 2 }}>
-                DKM MASJID JAMI&apos; AL-IKHLAS
-              </h4>
-              <p style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: 14 }}>
-                Badan Amil Zakat, Infak & Sedekah (BAZIS) Masjid
-              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 10,
+                  marginBottom: 8,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="Logo Masjid Al-Muhajirin"
+                  style={{ width: 42, height: 42, objectFit: 'contain' }}
+                />
+                <div style={{ textAlign: 'left' }}>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--primary-dark)', margin: 0 }}>
+                    DKM MASJID AL-MUHAJIRIN
+                  </h4>
+                  <p style={{ fontSize: '0.68rem', color: '#64748b', margin: 0 }}>
+                    Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi
+                  </p>
+                </div>
+              </div>
 
               <div style={{ padding: '12px', background: '#f1f5f9', borderRadius: 10, marginBottom: 14 }}>
                 <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Nomor Bukti Kupon:</div>
@@ -357,7 +375,7 @@ export const ZakatInputModal: React.FC<ZakatInputModalProps> = ({
               {/* QR Verification Simulation */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#64748b', fontSize: '0.75rem' }}>
                 <QrCode size={36} style={{ color: 'var(--primary)' }} />
-                <span>Terverifikasi Sah oleh Petugas Amil DKM</span>
+                <span>Terverifikasi Sah oleh Petugas Amil DKM Masjid Al-Muhajirin</span>
               </div>
             </div>
 
@@ -365,7 +383,7 @@ export const ZakatInputModal: React.FC<ZakatInputModalProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  const text = `*BUKTI SERAH TERIMA ZAKAT DKM AL-IKHLAS*%0ANo: ${generatedKupon.noKupon}%0AMuzakki: ${generatedKupon.namaMuzakki}%0AJenis: ${generatedKupon.jenisZakat}%0ATotal: ${generatedKupon.nominalRp ? formatRupiah(generatedKupon.nominalRp) : generatedKupon.jumlahBerasKg + ' Kg Beras'}%0A%0A_Jazakumullahu Khairan Katsiran._`;
+                  const text = `*BUKTI SERAH TERIMA ZAKAT MASJID AL-MUHAJIRIN (BEKASI)*%0ANo: ${generatedKupon.noKupon}%0AMuzakki: ${generatedKupon.namaMuzakki}%0AJenis: ${generatedKupon.jenisZakat}%0ATotal: ${generatedKupon.nominalRp ? formatRupiah(generatedKupon.nominalRp) : generatedKupon.jumlahBerasKg + ' Kg Beras'}%0AAlamat: Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi%0A%0A_Jazakumullahu Khairan Katsiran._`;
                   window.open(`https://wa.me/?text=${text}`, '_blank');
                 }}
                 className="btn-primary"

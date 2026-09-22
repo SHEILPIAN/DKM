@@ -13,10 +13,10 @@ import {
 } from '@/types/dkm';
 
 export const INITIAL_USERS: User[] = [
-  { id: 1, nama: 'H. Ahmad Dahlan (Ketua DKM)', email: 'ketua@alikhlas.org', role: 'KETUA_DKM' },
-  { id: 2, nama: 'Ustadz Ridwan, S.E (Bendahara)', email: 'bendahara@alikhlas.org', role: 'BENDAHARA' },
-  { id: 3, nama: 'Fian Tampan (Petugas Piket)', email: 'piket@alikhlas.org', role: 'PIKET' },
-  { id: 4, nama: 'Admin IT DKM', email: 'admin@alikhlas.org', role: 'SUPER_ADMIN' },
+  { id: 1, nama: 'H. Ahmad Dahlan (Ketua DKM)', email: 'ketua@almuhajirin.org', role: 'KETUA_DKM' },
+  { id: 2, nama: 'Ustadz Ridwan, S.E (Bendahara)', email: 'bendahara@almuhajirin.org', role: 'BENDAHARA' },
+  { id: 3, nama: 'Fian Tampan (Petugas Piket)', email: 'piket@almuhajirin.org', role: 'PIKET' },
+  { id: 4, nama: 'Admin IT DKM', email: 'admin@almuhajirin.org', role: 'SUPER_ADMIN' },
 ];
 
 export const INITIAL_KATEGORI_KAS: KategoriKas[] = [

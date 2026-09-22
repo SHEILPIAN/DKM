@@ -18,6 +18,8 @@ import { EmployeeList } from '@/components/modules/hr/EmployeeList';
 import { PrayerAttendance } from '@/components/modules/hr/PrayerAttendance';
 import { SalarySlipModal } from '@/components/modules/hr/SalarySlipModal';
 import { JamaahMobileView } from '@/components/modules/jamaah/JamaahMobileView';
+import { AndroidAppModal } from '@/components/layout/AndroidAppModal';
+import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
 
 import {
   INITIAL_KATEGORI_KAS,
@@ -71,6 +73,7 @@ export default function DkmApp() {
   const [selectedBookingDate, setSelectedBookingDate] = useState<string>('');
   const [selectedBookingFacilityId, setSelectedBookingFacilityId] = useState<number>(1);
   const [isZakatModalOpen, setIsZakatModalOpen] = useState<boolean>(false);
+  const [isAndroidModalOpen, setIsAndroidModalOpen] = useState<boolean>(false);
 
   // -------------------------------------------------------------
   // Modul 1 Handlers: Kasir & Mutasi Saldo
@@ -283,6 +286,7 @@ export default function DkmApp() {
           onOpenCashier={() => setIsCashierOpen(true)}
           isMobileView={isMobileView}
           setIsMobileView={setIsMobileView}
+          onOpenAndroidModal={() => setIsAndroidModalOpen(true)}
         />
 
         <main className="page-content">
@@ -484,6 +488,22 @@ export default function DkmApp() {
         isOpen={isZakatModalOpen}
         onClose={() => setIsZakatModalOpen(false)}
         onAddZakat={handleAddZakat}
+      />
+
+      {/* MODAL 4: Installer Aplikasi Android */}
+      <AndroidAppModal
+        isOpen={isAndroidModalOpen}
+        onClose={() => setIsAndroidModalOpen(false)}
+      />
+
+      {/* MOBILE BOTTOM NAVIGATION BAR (Untuk Smartphone Android) */}
+      <MobileBottomNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        isMobileView={isMobileView}
+        setIsMobileView={setIsMobileView}
+        pendingBookingsCount={pendingBookingsCount}
+        pendingSalaryCount={pendingSalaryCount}
       />
     </div>
   );

@@ -1,6 +1,10 @@
-# Sistem Manajemen Terpadu DKM (Dewan Kemakmuran Masjid)
+# Sistem Informasi & Manajemen Terpadu DKM Masjid Al-Muhajirin (MAM)
 
-Aplikasi Web Fullstack Manajemen DKM modern yang dirancang khusus untuk transparansi keuangan kasir infaq, peminjaman fasilitas anti-bentrok jadwal, tata kelola ZISWAF & kepanitiaan Qurban patungan sapi 1:7, serta absensi & penggajian (Kafalah) petugas masjid.
+**Masjid Al-Muhajirin**  
+📍 **Alamat**: Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya, Bekasi  
+📱 **Dukungan Aplikasi Android**: PWA Standalone (WebAPK) & Native Android Project (Capacitor)
+
+Aplikasi Fullstack Manajemen DKM modern yang dirancang khusus untuk transparansi keuangan kasir infaq, peminjaman fasilitas anti-bentrok jadwal, tata kelola ZISWAF & kepanitiaan Qurban patungan sapi 1:7, serta absensi & penggajian (Kafalah) petugas masjid.
 
 ---
 
@@ -102,3 +106,39 @@ npx prisma generate
    npm run build
    npm run start
    ```
+
+---
+
+## 📱 Panduan Menjalankan / Memasang di HP Android
+
+Aplikasi ini telah dirancang khusus agar dapat berjalan lancar di smartphone Android melalui 2 metode:
+
+### Metode 1: Pasang Langsung di HP Android (Instan via PWA / WebAPK)
+1. Buka browser **Google Chrome** atau **Samsung Internet** di HP Android Anda.
+2. Akses alamat server sistem DKM Al-Muhajirin.
+3. Tekan tombol menu titik tiga (**⋮**) di pojok kanan atas browser, lalu pilih **"Tambahkan ke Layar Utama"** atau **"Install Aplikasi"**.
+4. Aplikasi akan langsung terpasang di menu utama HP Android Anda dengan logo resmi Masjid Al-Muhajirin dan berjalan layar penuh tanpa bar browser (*standalone native feel*).
+
+### Metode 2: Build Menjadi File APK Android (.apk) Menggunakan Capacitor
+Folder proyek native Android telah disediakan di direktori `/android` dengan package `org.almuhajirin.dkm`.
+
+1. **Buka Proyek di Android Studio**:
+   ```bash
+   npm run android:open
+   ```
+   *(Atau buka langsung folder `d:\Development\DKM\android` di aplikasi Android Studio).*
+
+2. **Sinkronisasi Perubahan Web ke Android**:
+   ```bash
+   npm run android:sync
+   ```
+
+3. **Build APK Debug**:
+   Di dalam folder `android/`, jalankan:
+   ```bash
+   ./gradlew assembleDebug
+   ```
+   File APK output dapat ditemukan di:
+   `android/app/build/outputs/apk/debug/app-debug.apk`
+   Salin file `.apk` tersebut ke HP Android Anda dan lakukan instalasi!
+

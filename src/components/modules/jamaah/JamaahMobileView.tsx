@@ -80,26 +80,39 @@ export const JamaahMobileView: React.FC<JamaahMobileViewProps> = ({
             position: 'relative',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <div>
-              <div style={{ fontSize: '0.72rem', opacity: 0.9, letterSpacing: '0.5px' }}>
-                SELAMAT DATANG DI
-              </div>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Masjid Jami&apos; Al-Ikhlas</h2>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
             <div
               style={{
-                width: 38,
-                height: 38,
-                borderRadius: 12,
-                background: 'rgba(255,255,255,0.2)',
-                backdropFilter: 'blur(5px)',
+                width: 48,
+                height: 48,
+                borderRadius: 14,
+                background: '#ffffff',
+                border: '1.5px solid var(--border-emerald)',
+                padding: 3,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
               }}
             >
-              🕌
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.png"
+                alt="Logo Masjid Al-Muhajirin"
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.68rem', opacity: 0.9, letterSpacing: '0.5px', fontWeight: 600 }}>
+                SELAMAT DATANG DI
+              </div>
+              <h2 style={{ fontSize: '1.15rem', fontWeight: 800, lineHeight: 1.2 }}>
+                Masjid Al-Muhajirin
+              </h2>
+              <p style={{ fontSize: '0.68rem', opacity: 0.9, marginTop: 2 }}>
+                Jl. Maskoki Raya, Kayuringin Jaya Bekasi
+              </p>
             </div>
           </div>
 
@@ -110,7 +123,7 @@ export const JamaahMobileView: React.FC<JamaahMobileViewProps> = ({
               gap: 6,
               padding: '4px 10px',
               borderRadius: 999,
-              background: 'rgba(0,0,0,0.15)',
+              background: 'rgba(0,0,0,0.18)',
               fontSize: '0.72rem',
               fontWeight: 600,
             }}
@@ -397,7 +410,7 @@ export const JamaahMobileView: React.FC<JamaahMobileViewProps> = ({
               <div className="modal-body" style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: '0.82rem', color: '#475569', marginBottom: 12 }}>
                   NMID: ID1020038891029<br />
-                  <strong>DKM MASJID JAMI&apos; AL-IKHLAS</strong>
+                  <strong>DKM MASJID AL-MUHAJIRIN (BEKASI)</strong>
                 </p>
 
                 {/* SVG QR Code Simulation */}
