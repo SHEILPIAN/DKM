@@ -58,6 +58,11 @@ import {
   RekeningLembaga,
   Kegiatan,
   InventoryItem,
+  IdulFitriAgenda,
+  IdulFitriPanitia,
+  TvRunningText,
+  TvPengumuman,
+  TvSetting,
 } from '@/types/dkm';
 
 export default function DkmApp() {
@@ -81,6 +86,66 @@ export default function DkmApp() {
   const [rekeningLembaga, setRekeningLembaga] = useState<RekeningLembaga[]>(INITIAL_REKENING_LEMBAGA);
   const [kegiatanList, setKegiatanList] = useState<Kegiatan[]>(INITIAL_KEGIATAN);
   const [inventoryList, setInventoryList] = useState<InventoryItem[]>(INITIAL_INVENTORY);
+
+  // Idul Fitri States
+  const [idulFitriAgendas, setIdulFitriAgendas] = useState<IdulFitriAgenda[]>([
+    {
+      id: 1,
+      namaAcara: 'Shalat Idul Fitri 1447 H Berjamaah',
+      tanggalWaktu: '1 Syawal 1447 H • Pukul 06.45 WIB',
+      lokasi: 'Halaman Parkir & Ruang Utama AL-Muhajirin',
+      imamKhatib: 'Imam: Ustadz M. Syakir, Lc. | Khatib: Dr. H. Faisal Akbar, M.A.',
+      deskripsi: 'Jamaah diimbau membawa sajadah masing-masing dan berwudhu dari rumah.',
+    },
+    {
+      id: 2,
+      namaAcara: 'Gema Takbir Keliling & Syiar Remaja Masjid',
+      tanggalWaktu: 'Malam 1 Syawal • Pukul 20.00 WIB',
+      lokasi: 'Rute Wilayah RW 06 s.d RW 08 Kayuringin Jaya',
+      imamKhatib: 'Koordinator: Ust. Danang (RISMA)',
+      deskripsi: 'Diikuti santriwan-santriwati TPA AL-Muhajirin dan warga sekitar.',
+    },
+    {
+      id: 3,
+      namaAcara: 'Halal Bihalal & Silaturahim Akbar Jamaah',
+      tanggalWaktu: '2 Syawal 1447 H • Pukul 09.00 - 12.00 WIB',
+      lokasi: 'Aula Serbaguna Lt. 2 AL-Muhajirin',
+      imamKhatib: 'Kultum: Ustadz H. Ahmad Zaki, S.Ag',
+      deskripsi: 'Ramah tamah seluruh pengurus DKM, tokoh masyarakat, dan warga.',
+    },
+  ]);
+
+  const [idulFitriPanitiaList, setIdulFitriPanitiaList] = useState<IdulFitriPanitia[]>([
+    { id: 1, nama: 'H. Bambang Sugianto, M.M.', jabatan: 'Ketua Panitia Ramadhan & Idul Fitri', kontak: '0812-8877-6655' },
+    { id: 2, nama: 'Ustadz Ridwan, S.E.', jabatan: 'Seksi Zakat Fitrah & Fidyah', kontak: '0813-1122-3344' },
+    { id: 3, nama: 'Ir. Hendra Gunawan', jabatan: 'Seksi Pelaksanaan Shalat & Sound System', kontak: '0815-5544-3322' },
+    { id: 4, nama: 'Ibu Hj. Siti Rahmah', jabatan: 'Seksi Konsumsi & Halal Bihalal', kontak: '0818-7766-5544' },
+  ]);
+
+  const [detailShalatId, setDetailShalatId] = useState({
+    lokasi: 'Halaman Parkir & Ruang Utama AL-Muhajirin',
+    waktu: 'Pukul 06.45 WIB - Selesai',
+    imam: 'Ustadz M. Syakir, Lc.',
+    khatib: 'Dr. H. Faisal Akbar, M.A.',
+  });
+
+  // TV Masjid States
+  const [tvRunningTexts, setTvRunningTexts] = useState<TvRunningText[]>([
+    { id: 1, pesan: '📢 Mohon merapatkan dan meluruskan shaf shalat. Matikan atau heningkan nada dering ponsel Anda.', aktif: true, urutan: 1 },
+    { id: 2, pesan: '🕌 Kajian Rutin Ba\'da Maghrib setiap Kamis malam: Kitab Riyadhus Shalihin bersama Ust. Dr. H. Faisal Akbar.', aktif: true, urutan: 2 },
+    { id: 3, pesan: '💳 Salurkan infaq dan sedekah terbaik Anda melalui scan QRIS resmi AL-Muhajirin di pintu masuk masjid.', aktif: true, urutan: 3 },
+  ]);
+
+  const [tvPengumumanList, setTvPengumumanList] = useState<TvPengumuman[]>([
+    { id: 1, judul: 'Kajian Akbar Maulid Nabi', isi: 'Ahad Pagi, 27 September 2026 bersama Ustadz Abdul Somad, Lc. M.A.', tampilkan: true },
+    { id: 2, judul: 'Penerimaan Santri Baru TPA', isi: 'Pendaftaran TPA AL-Muhajirin semester ganjil telah dibuka di kantor sekretariat.', tampilkan: true },
+  ]);
+
+  const [tvSetting, setTvSetting] = useState<TvSetting>({
+    namaMasjid: 'AL-MUHAJIRIN',
+    lokasi: 'Kayuringin Jaya, Bekasi Selatan',
+    jedaIqomahMenit: 10,
+  });
 
   // ZISWAF Stocks
   const [stokBerasKg, setStokBerasKg] = useState<number>(450.0);
@@ -116,6 +181,55 @@ export default function DkmApp() {
         return k;
       })
     );
+  };
+
+  const handleUpdateTransaction = (updatedTrx: Transaksi) => {
+    const oldTrx = transaksi.find((t) => t.id === updatedTrx.id);
+    setTransaksi((prev) => prev.map((t) => (t.id === updatedTrx.id ? updatedTrx : t)));
+
+    if (oldTrx) {
+      setKategoriKas((prev) =>
+        prev.map((k) => {
+          let saldo = k.saldo;
+          if (k.id === oldTrx.kategoriId) {
+            saldo -= oldTrx.tipe === 'IN' ? oldTrx.nominal : -oldTrx.nominal;
+          }
+          if (k.id === updatedTrx.kategoriId) {
+            saldo += updatedTrx.tipe === 'IN' ? updatedTrx.nominal : -updatedTrx.nominal;
+          }
+          return { ...k, saldo: Math.max(0, saldo) };
+        })
+      );
+    }
+  };
+
+  const handleDeleteTransaction = (id: number) => {
+    const oldTrx = transaksi.find((t) => t.id === id);
+    setTransaksi((prev) => prev.filter((t) => t.id !== id));
+    if (oldTrx) {
+      setKategoriKas((prev) =>
+        prev.map((k) => {
+          if (k.id === oldTrx.kategoriId) {
+            const revert = oldTrx.tipe === 'IN' ? -oldTrx.nominal : oldTrx.nominal;
+            return { ...k, saldo: Math.max(0, k.saldo + revert) };
+          }
+          return k;
+        })
+      );
+    }
+  };
+
+  const handleAddKategoriKas = (kat: Omit<KategoriKas, 'id'>) => {
+    const created: KategoriKas = { ...kat, id: Date.now() };
+    setKategoriKas((prev) => [...prev, created]);
+  };
+
+  const handleUpdateKategoriKas = (kat: KategoriKas) => {
+    setKategoriKas((prev) => prev.map((k) => (k.id === kat.id ? kat : k)));
+  };
+
+  const handleDeleteKategoriKas = (id: number) => {
+    setKategoriKas((prev) => prev.filter((k) => k.id !== id));
   };
 
   // -------------------------------------------------------------
@@ -258,6 +372,47 @@ export default function DkmApp() {
     });
   };
 
+  const handleAddHewanQurban = (hewan: Omit<HewanQurban, 'id' | 'shohibul'>) => {
+    const created: HewanQurban = { ...hewan, id: Date.now(), shohibul: [] };
+    setHewanQurban((prev) => [...prev, created]);
+  };
+
+  const handleUpdateHewanQurban = (hewan: HewanQurban) => {
+    setHewanQurban((prev) => prev.map((h) => (h.id === hewan.id ? hewan : h)));
+  };
+
+  const handleDeleteHewanQurban = (id: number) => {
+    setHewanQurban((prev) => prev.filter((h) => h.id !== id));
+  };
+
+  const handleUpdateShohibul = (hewanId: number, shohibul: ShohibulQurban) => {
+    setHewanQurban((prev) =>
+      prev.map((h) => {
+        if (h.id === hewanId) {
+          return {
+            ...h,
+            shohibul: h.shohibul.map((s) => (s.id === shohibul.id ? shohibul : s)),
+          };
+        }
+        return h;
+      })
+    );
+  };
+
+  const handleDeleteShohibul = (hewanId: number, shohibulId: number) => {
+    setHewanQurban((prev) =>
+      prev.map((h) => {
+        if (h.id === hewanId) {
+          return {
+            ...h,
+            shohibul: h.shohibul.filter((s) => s.id !== shohibulId),
+          };
+        }
+        return h;
+      })
+    );
+  };
+
   // -------------------------------------------------------------
   // Modul 4 Handlers: HR & Kafalah Petugas
   // -------------------------------------------------------------
@@ -294,6 +449,44 @@ export default function DkmApp() {
     alert(
       `Alhamdulillah! Slip gaji ${slip.pegawaiNama} sebesar ${slip.nominal.toLocaleString('id-ID')} telah DISETUJUI & DIBAYARKAN. Transaksi pengeluaran otomatis tercatat di Kas Operasional.`
     );
+  };
+
+  const handleUpdateAbsensi = (absenData: Absensi) => {
+    setAbsensi((prev) => prev.map((a) => (a.id === absenData.id ? absenData : a)));
+  };
+
+  const handleDeleteAbsensi = (id: number) => {
+    setAbsensi((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  const handleAddPegawai = (p: Omit<Pegawai, 'id'>) => {
+    const created: Pegawai = { ...p, id: Date.now() };
+    setPegawai((prev) => [...prev, created]);
+  };
+
+  const handleUpdatePegawai = (p: Pegawai) => {
+    setPegawai((prev) => prev.map((item) => (item.id === p.id ? p : item)));
+  };
+
+  const handleDeletePegawai = (id: number) => {
+    setPegawai((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleAddSlipGaji = (slip: Omit<SlipGaji, 'id' | 'createdAt'>) => {
+    const created: SlipGaji = {
+      ...slip,
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
+    };
+    setSlipGaji((prev) => [created, ...prev]);
+  };
+
+  const handleUpdateSlipGaji = (slip: SlipGaji) => {
+    setSlipGaji((prev) => prev.map((s) => (s.id === slip.id ? slip : s)));
+  };
+
+  const handleDeleteSlipGaji = (id: number) => {
+    setSlipGaji((prev) => prev.filter((s) => s.id !== id));
   };
 
   // -------------------------------------------------------------
@@ -414,6 +607,72 @@ export default function DkmApp() {
     setDanaZakatRp(danaRp);
   };
 
+  // -------------------------------------------------------------
+  // Modul Idul Fitri Handlers
+  // -------------------------------------------------------------
+  const handleAddIdulFitriAgenda = (a: Omit<IdulFitriAgenda, 'id'>) => {
+    const created: IdulFitriAgenda = { ...a, id: Date.now() };
+    setIdulFitriAgendas((prev) => [...prev, created]);
+  };
+
+  const handleUpdateIdulFitriAgenda = (a: IdulFitriAgenda) => {
+    setIdulFitriAgendas((prev) => prev.map((item) => (item.id === a.id ? a : item)));
+  };
+
+  const handleDeleteIdulFitriAgenda = (id: number) => {
+    setIdulFitriAgendas((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleAddIdulFitriPanitia = (p: Omit<IdulFitriPanitia, 'id'>) => {
+    const created: IdulFitriPanitia = { ...p, id: Date.now() };
+    setIdulFitriPanitiaList((prev) => [...prev, created]);
+  };
+
+  const handleUpdateIdulFitriPanitia = (p: IdulFitriPanitia) => {
+    setIdulFitriPanitiaList((prev) => prev.map((item) => (item.id === p.id ? p : item)));
+  };
+
+  const handleDeleteIdulFitriPanitia = (id: number) => {
+    setIdulFitriPanitiaList((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleUpdateDetailShalatId = (d: { lokasi: string; waktu: string; imam: string; khatib: string }) => {
+    setDetailShalatId(d);
+  };
+
+  // -------------------------------------------------------------
+  // Modul TV Display Masjid Handlers
+  // -------------------------------------------------------------
+  const handleAddTvRunningText = (rt: Omit<TvRunningText, 'id'>) => {
+    const created: TvRunningText = { ...rt, id: Date.now() };
+    setTvRunningTexts((prev) => [...prev, created]);
+  };
+
+  const handleUpdateTvRunningText = (rt: TvRunningText) => {
+    setTvRunningTexts((prev) => prev.map((item) => (item.id === rt.id ? rt : item)));
+  };
+
+  const handleDeleteTvRunningText = (id: number) => {
+    setTvRunningTexts((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleAddTvPengumuman = (p: Omit<TvPengumuman, 'id'>) => {
+    const created: TvPengumuman = { ...p, id: Date.now() };
+    setTvPengumumanList((prev) => [...prev, created]);
+  };
+
+  const handleUpdateTvPengumuman = (p: TvPengumuman) => {
+    setTvPengumumanList((prev) => prev.map((item) => (item.id === p.id ? p : item)));
+  };
+
+  const handleDeleteTvPengumuman = (id: number) => {
+    setTvPengumumanList((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleUpdateTvSetting = (s: TvSetting) => {
+    setTvSetting(s);
+  };
+
   // Counters
   const pendingBookingsCount = reservasi.filter((r) => r.status === 'PENDING').length;
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
@@ -474,6 +733,45 @@ export default function DkmApp() {
           onUpdateMustahiq={handleUpdateMustahiq}
           onDeleteMustahiq={handleDeleteMustahiq}
           onUpdateStokZiswaf={handleUpdateStokZiswaf}
+          onAddTransaction={handleAddTransaction}
+          onUpdateTransaction={handleUpdateTransaction}
+          onDeleteTransaction={handleDeleteTransaction}
+          onAddKategoriKas={handleAddKategoriKas}
+          onUpdateKategoriKas={handleUpdateKategoriKas}
+          onDeleteKategoriKas={handleDeleteKategoriKas}
+          onAddHewanQurban={handleAddHewanQurban}
+          onUpdateHewanQurban={handleUpdateHewanQurban}
+          onDeleteHewanQurban={handleDeleteHewanQurban}
+          onUpdateShohibul={handleUpdateShohibul}
+          onDeleteShohibul={handleDeleteShohibul}
+          onUpdateAbsensi={handleUpdateAbsensi}
+          onDeleteAbsensi={handleDeleteAbsensi}
+          onAddPegawai={handleAddPegawai}
+          onUpdatePegawai={handleUpdatePegawai}
+          onDeletePegawai={handleDeletePegawai}
+          onAddSlipGaji={handleAddSlipGaji}
+          onUpdateSlipGaji={handleUpdateSlipGaji}
+          onDeleteSlipGaji={handleDeleteSlipGaji}
+          idulFitriAgendas={idulFitriAgendas}
+          onAddIdulFitriAgenda={handleAddIdulFitriAgenda}
+          onUpdateIdulFitriAgenda={handleUpdateIdulFitriAgenda}
+          onDeleteIdulFitriAgenda={handleDeleteIdulFitriAgenda}
+          idulFitriPanitiaList={idulFitriPanitiaList}
+          onAddIdulFitriPanitia={handleAddIdulFitriPanitia}
+          onUpdateIdulFitriPanitia={handleUpdateIdulFitriPanitia}
+          onDeleteIdulFitriPanitia={handleDeleteIdulFitriPanitia}
+          detailShalatId={detailShalatId}
+          onUpdateDetailShalatId={handleUpdateDetailShalatId}
+          tvRunningTexts={tvRunningTexts}
+          onAddTvRunningText={handleAddTvRunningText}
+          onUpdateTvRunningText={handleUpdateTvRunningText}
+          onDeleteTvRunningText={handleDeleteTvRunningText}
+          tvPengumumanList={tvPengumumanList}
+          onAddTvPengumuman={handleAddTvPengumuman}
+          onUpdateTvPengumuman={handleUpdateTvPengumuman}
+          onDeleteTvPengumuman={handleDeleteTvPengumuman}
+          tvSetting={tvSetting}
+          onUpdateTvSetting={handleUpdateTvSetting}
         />
       ) : (
         /* ===================================================== */

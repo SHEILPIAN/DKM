@@ -27,6 +27,11 @@ import {
   RekeningLembaga,
   Kegiatan,
   InventoryItem,
+  IdulFitriAgenda,
+  IdulFitriPanitia,
+  TvRunningText,
+  TvPengumuman,
+  TvSetting,
 } from '@/types/dkm';
 
 import { MaslamHome } from './MaslamHome';
@@ -96,6 +101,50 @@ interface MaslamAppProps {
   onUpdateMustahiq?: (m: Mustahiq) => void;
   onDeleteMustahiq?: (id: number) => void;
   onUpdateStokZiswaf?: (berasKg: number, danaRp: number) => void;
+  // Keuangan
+  onAddTransaction?: (trx: Omit<Transaksi, 'id'>) => void;
+  onUpdateTransaction?: (trx: Transaksi) => void;
+  onDeleteTransaction?: (id: number) => void;
+  onAddKategoriKas?: (kat: Omit<KategoriKas, 'id'>) => void;
+  onUpdateKategoriKas?: (kat: KategoriKas) => void;
+  onDeleteKategoriKas?: (id: number) => void;
+  // Idul Adha
+  onAddHewanQurban?: (hewan: Omit<HewanQurban, 'id' | 'shohibul'>) => void;
+  onUpdateHewanQurban?: (hewan: HewanQurban) => void;
+  onDeleteHewanQurban?: (id: number) => void;
+  onUpdateShohibul?: (hewanId: number, shohibul: ShohibulQurban) => void;
+  onDeleteShohibul?: (hewanId: number, shohibulId: number) => void;
+  // Administrasi
+  onUpdateAbsensi?: (absenData: Absensi) => void;
+  onDeleteAbsensi?: (id: number) => void;
+  onAddPegawai?: (p: Omit<Pegawai, 'id'>) => void;
+  onUpdatePegawai?: (p: Pegawai) => void;
+  onDeletePegawai?: (id: number) => void;
+  onAddSlipGaji?: (slip: Omit<SlipGaji, 'id' | 'createdAt'>) => void;
+  onUpdateSlipGaji?: (slip: SlipGaji) => void;
+  onDeleteSlipGaji?: (id: number) => void;
+  // Idul Fitri
+  idulFitriAgendas?: IdulFitriAgenda[];
+  onAddIdulFitriAgenda?: (a: Omit<IdulFitriAgenda, 'id'>) => void;
+  onUpdateIdulFitriAgenda?: (a: IdulFitriAgenda) => void;
+  onDeleteIdulFitriAgenda?: (id: number) => void;
+  idulFitriPanitiaList?: IdulFitriPanitia[];
+  onAddIdulFitriPanitia?: (p: Omit<IdulFitriPanitia, 'id'>) => void;
+  onUpdateIdulFitriPanitia?: (p: IdulFitriPanitia) => void;
+  onDeleteIdulFitriPanitia?: (id: number) => void;
+  detailShalatId?: { lokasi: string; waktu: string; imam: string; khatib: string };
+  onUpdateDetailShalatId?: (d: { lokasi: string; waktu: string; imam: string; khatib: string }) => void;
+  // TV Masjid
+  tvRunningTexts?: TvRunningText[];
+  onAddTvRunningText?: (rt: Omit<TvRunningText, 'id'>) => void;
+  onUpdateTvRunningText?: (rt: TvRunningText) => void;
+  onDeleteTvRunningText?: (id: number) => void;
+  tvPengumumanList?: TvPengumuman[];
+  onAddTvPengumuman?: (p: Omit<TvPengumuman, 'id'>) => void;
+  onUpdateTvPengumuman?: (p: TvPengumuman) => void;
+  onDeleteTvPengumuman?: (id: number) => void;
+  tvSetting?: TvSetting;
+  onUpdateTvSetting?: (setting: TvSetting) => void;
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
@@ -148,6 +197,45 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onUpdateMustahiq,
   onDeleteMustahiq,
   onUpdateStokZiswaf,
+  onAddTransaction,
+  onUpdateTransaction,
+  onDeleteTransaction,
+  onAddKategoriKas,
+  onUpdateKategoriKas,
+  onDeleteKategoriKas,
+  onAddHewanQurban,
+  onUpdateHewanQurban,
+  onDeleteHewanQurban,
+  onUpdateShohibul,
+  onDeleteShohibul,
+  onUpdateAbsensi,
+  onDeleteAbsensi,
+  onAddPegawai,
+  onUpdatePegawai,
+  onDeletePegawai,
+  onAddSlipGaji,
+  onUpdateSlipGaji,
+  onDeleteSlipGaji,
+  idulFitriAgendas,
+  onAddIdulFitriAgenda,
+  onUpdateIdulFitriAgenda,
+  onDeleteIdulFitriAgenda,
+  idulFitriPanitiaList,
+  onAddIdulFitriPanitia,
+  onUpdateIdulFitriPanitia,
+  onDeleteIdulFitriPanitia,
+  detailShalatId,
+  onUpdateDetailShalatId,
+  tvRunningTexts,
+  onAddTvRunningText,
+  onUpdateTvRunningText,
+  onDeleteTvRunningText,
+  tvPengumumanList,
+  onAddTvPengumuman,
+  onUpdateTvPengumuman,
+  onDeleteTvPengumuman,
+  tvSetting,
+  onUpdateTvSetting,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<string>('home');
   const [isQrScanOpen, setIsQrScanOpen] = useState<boolean>(false);
@@ -183,6 +271,12 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               kategoriKas={kategoriKas}
               transaksi={transaksi}
               onOpenCashier={onOpenCashier}
+              onAddTransaction={onAddTransaction}
+              onUpdateTransaction={onUpdateTransaction}
+              onDeleteTransaction={onDeleteTransaction}
+              onAddKategoriKas={onAddKategoriKas}
+              onUpdateKategoriKas={onUpdateKategoriKas}
+              onDeleteKategoriKas={onDeleteKategoriKas}
             />
           )}
 
@@ -228,6 +322,11 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               onBack={() => setCurrentScreen('home')}
               hewanQurban={hewanQurban}
               onRegisterShohibul={onRegisterShohibul}
+              onAddHewanQurban={onAddHewanQurban}
+              onUpdateHewanQurban={onUpdateHewanQurban}
+              onDeleteHewanQurban={onDeleteHewanQurban}
+              onUpdateShohibul={onUpdateShohibul}
+              onDeleteShohibul={onDeleteShohibul}
             />
           )}
 
@@ -238,7 +337,15 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               absensi={absensi}
               slipGaji={slipGaji}
               onAddAbsensi={onAddAbsensi}
+              onUpdateAbsensi={onUpdateAbsensi}
+              onDeleteAbsensi={onDeleteAbsensi}
               onApproveSalary={onApproveSalary}
+              onAddPegawai={onAddPegawai}
+              onUpdatePegawai={onUpdatePegawai}
+              onDeletePegawai={onDeletePegawai}
+              onAddSlipGaji={onAddSlipGaji}
+              onUpdateSlipGaji={onUpdateSlipGaji}
+              onDeleteSlipGaji={onDeleteSlipGaji}
             />
           )}
 
@@ -282,11 +389,33 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
             <MaslamIdulFitri
               onBack={() => setCurrentScreen('home')}
               onOpenZakat={onOpenZakatModal}
+              agendaList={idulFitriAgendas}
+              onAddAgenda={onAddIdulFitriAgenda}
+              onUpdateAgenda={onUpdateIdulFitriAgenda}
+              onDeleteAgenda={onDeleteIdulFitriAgenda}
+              panitiaList={idulFitriPanitiaList}
+              onAddPanitia={onAddIdulFitriPanitia}
+              onUpdatePanitia={onUpdateIdulFitriPanitia}
+              onDeletePanitia={onDeleteIdulFitriPanitia}
+              detailShalat={detailShalatId}
+              onUpdateDetailShalat={onUpdateDetailShalatId}
             />
           )}
 
           {currentScreen === 'tvmasjid' && (
-            <MaslamTvMasjid onBack={() => setCurrentScreen('home')} />
+            <MaslamTvMasjid
+              onBack={() => setCurrentScreen('home')}
+              runningTexts={tvRunningTexts}
+              onAddRunningText={onAddTvRunningText}
+              onUpdateRunningText={onUpdateTvRunningText}
+              onDeleteRunningText={onDeleteTvRunningText}
+              pengumumanList={tvPengumumanList}
+              onAddPengumuman={onAddTvPengumuman}
+              onUpdatePengumuman={onUpdateTvPengumuman}
+              onDeletePengumuman={onDeleteTvPengumuman}
+              tvSetting={tvSetting}
+              onUpdateTvSetting={onUpdateTvSetting}
+            />
           )}
 
           {currentScreen === 'akun' && (

@@ -207,4 +207,39 @@ export interface InventoryItem {
   keterangan?: string;
 }
 
+export interface IdulFitriAgenda {
+  id: number;
+  namaAcara: string;
+  tanggalWaktu: string;
+  lokasi: string;
+  imamKhatib?: string;
+  deskripsi?: string;
+}
 
+export interface IdulFitriPanitia {
+  id: number;
+  nama: string;
+  jabatan: string;
+  kontak: string;
+}
+
+export interface TvRunningText {
+  id: number;
+  pesan: string;
+  aktif: boolean;
+  urutan: number;
+}
+
+export interface TvPengumuman {
+  id: number;
+  judul: string;
+  isi: string;
+  tampilkan: boolean;
+  tanggalMulai?: string;
+}
+
+export interface TvSetting {
+  namaMasjid: string;
+  lokasi: string;
+  jedaIqomahMenit: number;
+}
