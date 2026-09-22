@@ -84,6 +84,9 @@ interface MaslamAppProps {
   onAddKegiatan?: (k: Omit<Kegiatan, 'id'>) => void;
   onUpdateKegiatan?: (k: Kegiatan) => void;
   onDeleteKegiatan?: (id: number) => void;
+  onAddFasilitas?: (f: Omit<Fasilitas, 'id'>) => void;
+  onUpdateFasilitas?: (f: Fasilitas) => void;
+  onDeleteFasilitas?: (id: number) => void;
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
@@ -125,6 +128,9 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onAddKegiatan,
   onUpdateKegiatan,
   onDeleteKegiatan,
+  onAddFasilitas,
+  onUpdateFasilitas,
+  onDeleteFasilitas,
 }) => {
   const [currentScreen, setCurrentScreen] = useState<string>('home');
   const [isQrScanOpen, setIsQrScanOpen] = useState<boolean>(false);
@@ -179,6 +185,9 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               fasilitas={fasilitas}
               reservasi={reservasi}
               onOpenBookingModal={onOpenBookingModal}
+              onAddFasilitas={onAddFasilitas}
+              onUpdateFasilitas={onUpdateFasilitas}
+              onDeleteFasilitas={onDeleteFasilitas}
             />
           )}
 

@@ -144,6 +144,24 @@ export default function DkmApp() {
     );
   };
 
+  const handleAddFasilitas = (newFas: Omit<Fasilitas, 'id'>) => {
+    const created: Fasilitas = {
+      ...newFas,
+      id: Date.now(),
+    };
+    setFasilitas((prev) => [...prev, created]);
+  };
+
+  const handleUpdateFasilitas = (updated: Fasilitas) => {
+    setFasilitas((prev) =>
+      prev.map((f) => (f.id === updated.id ? updated : f))
+    );
+  };
+
+  const handleDeleteFasilitas = (id: number) => {
+    setFasilitas((prev) => prev.filter((f) => f.id !== id));
+  };
+
   const handleRejectBooking = (id: number, catatan: string) => {
     setReservasi((prev) =>
       prev.map((r) =>
@@ -401,6 +419,9 @@ export default function DkmApp() {
           onAddKegiatan={handleAddKegiatan}
           onUpdateKegiatan={handleUpdateKegiatan}
           onDeleteKegiatan={handleDeleteKegiatan}
+          onAddFasilitas={handleAddFasilitas}
+          onUpdateFasilitas={handleUpdateFasilitas}
+          onDeleteFasilitas={handleDeleteFasilitas}
         />
       ) : (
         /* ===================================================== */
