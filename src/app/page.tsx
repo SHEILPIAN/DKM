@@ -788,6 +788,7 @@ export default function DkmApp() {
 
           {/* Main Content Wrapper */}
           <div className="main-wrapper">
+            <div className="desktop-wallpaper-bg" aria-hidden="true" />
             <Header
               onOpenCashier={() => setIsCashierOpen(true)}
               isMobileView={isMobileView}

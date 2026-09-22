@@ -255,8 +255,13 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   return (
     <div className="maslam-phone-wrapper">
       <div className="maslam-device">
+        {/* Background Mosque Wallpaper Watermark */}
+        <div className="maslam-device-bg" aria-hidden="true">
+          <div className="maslam-device-bg-img" />
+        </div>
+
         {/* Main Content Router */}
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
           {currentScreen === 'home' && (
             <MaslamHome
               onNavigate={(screen) => setCurrentScreen(screen)}
