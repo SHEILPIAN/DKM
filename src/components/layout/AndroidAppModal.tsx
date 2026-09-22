@@ -54,7 +54,7 @@ export const AndroidAppModal: React.FC<AndroidAppModalProps> = ({
       setDeferredPrompt(null);
     } else {
       alert(
-        'Untuk memasang di HP Android:\n1. Buka browser Chrome di HP Anda\n2. Tekan menu titik tiga (⋮) di pojok kanan atas\n3. Pilih "Tambahkan ke Layar Utama" / "Install Aplikasi"\n\nAplikasi DKM Masjid Al-Muhajirin akan otomatis terpasang dengan logo resmi!'
+        'Untuk memasang di HP Android:\n1. Buka browser Chrome di HP Anda\n2. Tekan menu titik tiga (⋮) di pojok kanan atas\n3. Pilih "Tambahkan ke Layar Utama" / "Install Aplikasi"\n\nAplikasi DKM AL-Muhajirin akan otomatis terpasang dengan logo resmi!'
       );
     }
   };
@@ -88,7 +88,7 @@ export const AndroidAppModal: React.FC<AndroidAppModalProps> = ({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.png"
-                alt="Logo Masjid Al-Muhajirin"
+                alt="Logo AL-Muhajirin"
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               />
             </div>
@@ -97,7 +97,7 @@ export const AndroidAppModal: React.FC<AndroidAppModalProps> = ({
                 Aplikasi HP Android DKM
               </h3>
               <p style={{ fontSize: '0.75rem', opacity: 0.9 }}>
-                Masjid Al-Muhajirin - Kayuringin Jaya Bekasi
+                AL-Muhajirin - Kayuringin Jaya Bekasi
               </p>
             </div>
           </div>
@@ -178,7 +178,7 @@ export const AndroidAppModal: React.FC<AndroidAppModalProps> = ({
                 <div style={{ fontSize: '0.85rem', color: '#166534', lineHeight: 1.5 }}>
                   <strong>Aplikasi Siap Pasang di Layar HP Android Anda!</strong>
                   <p style={{ marginTop: 4 }}>
-                    Sistem ini telah mendukung <em>Progressive Web App (PWA)</em> resmi dengan logo Masjid Al-Muhajirin.
+                    Sistem ini telah mendukung <em>Progressive Web App (PWA)</em> resmi dengan logo AL-Muhajirin.
                     Saat dipasang, aplikasi berjalan mandiri (full screen) tanpa browser bar.
                   </p>
                 </div>
@@ -236,7 +236,7 @@ export const AndroidAppModal: React.FC<AndroidAppModalProps> = ({
                   📱 Proyek Native Android (Capacitor) Sudah Dibuat:
                 </div>
                 <p style={{ lineHeight: 1.6 }}>
-                  Folder native Android telah berhasil di-generate di folder <code>/android</code> dengan package name <code>org.almuhajirin.dkm</code> dan seluruh icon aplikasi telah diganti dengan logo resmi Masjid Al-Muhajirin.
+                  Folder native Android telah berhasil di-generate di folder <code>/android</code> dengan package name <code>org.almuhajirin.dkm</code> dan seluruh icon aplikasi telah diganti dengan logo resmi AL-Muhajirin.
                 </p>
               </div>
 

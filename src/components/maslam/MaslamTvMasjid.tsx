@@ -41,7 +41,7 @@ export const MaslamTvMasjid: React.FC<MaslamTvMasjidProps> = ({ onBack }) => {
           Digital Signage TV
         </h2>
         <p style={{ fontSize: '0.78rem', opacity: 0.9, marginTop: 2, margin: 0 }}>
-          Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+          AL-MUHAJIRIN KAYURINGIN BEKASI
         </p>
       </div>
 
@@ -62,7 +62,7 @@ export const MaslamTvMasjid: React.FC<MaslamTvMasjidProps> = ({ onBack }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: 10 }}>
             <div>
               <div style={{ fontSize: '0.95rem', fontWeight: 900, color: '#f59e0b' }}>
-                MASJID AL-MUHAJIRIN
+                AL-MUHAJIRIN
               </div>
               <div style={{ fontSize: '0.65rem', opacity: 0.8 }}>
                 Kayuringin Jaya, Bekasi Selatan

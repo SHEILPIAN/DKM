@@ -264,7 +264,7 @@ export const BookingAdminQueue: React.FC<BookingAdminQueueProps> = ({
                 <p style={{ marginTop: 8 }}>
                   Permohonan reservasi fasilitas <strong>{whatsAppModalData.fasilitasNama}</strong> untuk kegiatan{' '}
                   &quot;{whatsAppModalData.tujuanAcara}&quot; telah <strong>DISETUJUI (APPROVED)</strong> oleh Sekretariat DKM
-                  Masjid Al-Muhajirin (Kayuringin Jaya, Bekasi).
+                  AL-Muhajirin (Kayuringin Jaya, Bekasi).
                 </p>
                 <div style={{ marginTop: 10, padding: 10, background: '#ffffff', borderRadius: 8, border: '1px dashed #86efac' }}>
                   <p style={{ fontWeight: 700, color: '#065f46' }}>Catatan Penggunaan:</p>

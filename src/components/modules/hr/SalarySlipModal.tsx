@@ -227,12 +227,12 @@ export const SalarySlipModal: React.FC<SalarySlipModalProps> = ({
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/logo.png"
-                      alt="Logo Masjid Al-Muhajirin"
+                      alt="Logo AL-Muhajirin"
                       style={{ width: 38, height: 38, objectFit: 'contain' }}
                     />
                     <div style={{ textAlign: 'left' }}>
                       <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--primary-dark)', margin: 0 }}>
-                        DKM MASJID AL-MUHAJIRIN
+                        DKM AL-MUHAJIRIN
                       </h4>
                       <p style={{ fontSize: '0.65rem', color: '#64748b', margin: 0 }}>
                         Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi

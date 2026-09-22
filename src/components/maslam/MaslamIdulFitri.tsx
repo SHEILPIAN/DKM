@@ -42,7 +42,7 @@ export const MaslamIdulFitri: React.FC<MaslamIdulFitriProps> = ({ onBack, onOpen
           Idul Fitri 1447 H
         </h2>
         <p style={{ fontSize: '0.78rem', opacity: 0.9, marginTop: 2, margin: 0 }}>
-          Masjid AL-MUHAJIRIN KAYURINGIN BEKASI
+          AL-MUHAJIRIN KAYURINGIN BEKASI
         </p>
       </div>
 
@@ -91,7 +91,7 @@ export const MaslamIdulFitri: React.FC<MaslamIdulFitriProps> = ({ onBack, onOpen
             Pelaksanaan Shalat Idul Fitri 1 Syawal
           </h4>
           <div style={{ fontSize: '0.78rem', color: '#334155', lineHeight: 1.6 }}>
-            <div>📍 <strong>Lokasi:</strong> Halaman Parkir & Ruang Utama Masjid Al-Muhajirin</div>
+            <div>📍 <strong>Lokasi:</strong> Halaman Parkir & Ruang Utama AL-Muhajirin</div>
             <div>⏰ <strong>Waktu:</strong> Pukul 06.45 WIB - Selesai</div>
             <div>🎙️ <strong>Imam:</strong> Ustadz M. Syakir, Lc.</div>
             <div>📜 <strong>Khatib:</strong> Dr. H. Faisal Akbar, M.A.</div>

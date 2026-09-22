@@ -99,7 +99,7 @@ export const JamaahMobileView: React.FC<JamaahMobileViewProps> = ({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.png"
-                alt="Logo Masjid Al-Muhajirin"
+                alt="Logo AL-Muhajirin"
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               />
             </div>
@@ -108,7 +108,7 @@ export const JamaahMobileView: React.FC<JamaahMobileViewProps> = ({
                 SELAMAT DATANG DI
               </div>
               <h2 style={{ fontSize: '1.15rem', fontWeight: 800, lineHeight: 1.2 }}>
-                Masjid Al-Muhajirin
+                AL-Muhajirin
               </h2>
               <p style={{ fontSize: '0.68rem', opacity: 0.9, marginTop: 2 }}>
                 Jl. Maskoki Raya, Kayuringin Jaya Bekasi
@@ -410,7 +410,7 @@ export const JamaahMobileView: React.FC<JamaahMobileViewProps> = ({
               <div className="modal-body" style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: '0.82rem', color: '#475569', marginBottom: 12 }}>
                   NMID: ID1020038891029<br />
-                  <strong>DKM MASJID AL-MUHAJIRIN (BEKASI)</strong>
+                  <strong>DKM AL-MUHAJIRIN (BEKASI)</strong>
                 </p>
 
                 {/* SVG QR Code Simulation */}

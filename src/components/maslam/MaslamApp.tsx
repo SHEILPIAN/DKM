@@ -356,7 +356,7 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
                 <QrCode size={180} style={{ color: '#0f172a' }} />
               </div>
               <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
-                DKM MASJID AL-MUHAJIRIN
+                DKM AL-MUHAJIRIN
               </h4>
               <p style={{ fontSize: '0.74rem', color: '#64748b', margin: 0 }}>
                 NMID: ID1020038891238 • Mendukung Semua Bank & Dompet Digital

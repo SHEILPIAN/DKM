@@ -85,7 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
-            alt="Logo Masjid Al-Muhajirin"
+            alt="Logo AL-Muhajirin"
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
           />
         </div>

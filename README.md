@@ -1,6 +1,6 @@
-# Sistem Informasi & Manajemen Terpadu DKM Masjid Al-Muhajirin (MAM)
+# Sistem Informasi & Manajemen Terpadu DKM AL-Muhajirin (MAM)
 
-**Masjid Al-Muhajirin**  
+**AL-Muhajirin**  
 📍 **Alamat**: Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya, Bekasi  
 📱 **Dukungan Aplikasi Android**: PWA Standalone (WebAPK) & Native Android Project (Capacitor)
 
@@ -117,7 +117,7 @@ Aplikasi ini telah dirancang khusus agar dapat berjalan lancar di smartphone And
 1. Buka browser **Google Chrome** atau **Samsung Internet** di HP Android Anda.
 2. Akses alamat server sistem DKM Al-Muhajirin.
 3. Tekan tombol menu titik tiga (**⋮**) di pojok kanan atas browser, lalu pilih **"Tambahkan ke Layar Utama"** atau **"Install Aplikasi"**.
-4. Aplikasi akan langsung terpasang di menu utama HP Android Anda dengan logo resmi Masjid Al-Muhajirin dan berjalan layar penuh tanpa bar browser (*standalone native feel*).
+4. Aplikasi akan langsung terpasang di menu utama HP Android Anda dengan logo resmi AL-Muhajirin dan berjalan layar penuh tanpa bar browser (*standalone native feel*).
 
 ### Metode 2: Build Menjadi File APK Android (.apk) Menggunakan Capacitor
 Folder proyek native Android telah disediakan di direktori `/android` dengan package `org.almuhajirin.dkm`.

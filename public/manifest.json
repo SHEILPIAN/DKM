@@ -1,7 +1,7 @@
 {
-  "name": "DKM Masjid Al-Muhajirin",
-  "short_name": "Al-Muhajirin",
-  "description": "Sistem Informasi & Manajemen DKM Masjid Al-Muhajirin - Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi",
+  "name": "DKM AL-Muhajirin",
+  "short_name": "AL-Muhajirin",
+  "description": "Sistem Informasi & Manajemen DKM AL-Muhajirin - Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

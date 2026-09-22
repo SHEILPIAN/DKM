@@ -85,7 +85,7 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
             <div style={{ fontSize: '0.75rem', opacity: 0.85, marginTop: 2 }}>
               {currentUser === 'PIKET' && 'Petugas Piket & Operator Kasir HP'}
               {currentUser === 'BENDAHARA' && 'Bendahara Umum DKM'}
-              {currentUser === 'KETUA' && 'Ketua DKM Al-Muhajirin'}
+              {currentUser === 'KETUA' && 'Ketua DKM AL-Muhajirin'}
             </div>
             <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
               <span
@@ -251,7 +251,7 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
       {/* App Info Footer */}
       <div style={{ textAlign: 'center', padding: '16px', color: '#94a3b8', fontSize: '0.72rem' }}>
         <div>MASLAM DKM v2.4.0 (Mobile Build)</div>
-        <div>Masjid Al-Muhajirin Kayuringin Bekasi</div>
+        <div>AL-Muhajirin Kayuringin Bekasi</div>
       </div>
     </div>
   );

@@ -9,9 +9,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "DKM Masjid Al-Muhajirin - Sistem Manajemen Terpadu",
+  title: "DKM AL-Muhajirin - Sistem Manajemen Terpadu",
   description:
-    "Sistem manajemen DKM terpadu Masjid Al-Muhajirin - Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi. Mencakup Analitik Keuangan, Kasir Infaq, Reservasi Fasilitas, ZISWAF, Qurban, dan HR Kafalah.",
+    "Sistem manajemen DKM terpadu AL-Muhajirin - Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi. Mencakup Analitik Keuangan, Kasir Infaq, Reservasi Fasilitas, ZISWAF, Qurban, dan HR Kafalah.",
   manifest: "/manifest.json",
   icons: {
     icon: "/logo.png",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "DKM Al-Muhajirin",
+    title: "DKM AL-Muhajirin",
   },
 };
 

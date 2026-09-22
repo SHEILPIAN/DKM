@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 echo =======================================================
-echo   DKM MASJID AL-MUHAJIRIN - ANDROID APK BUILDER
+echo   DKM AL-MUHAJIRIN - ANDROID APK BUILDER
 echo   Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi
 echo =======================================================
 echo.

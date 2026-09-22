@@ -331,12 +331,12 @@ export const ZakatInputModal: React.FC<ZakatInputModalProps> = ({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/logo.png"
-                  alt="Logo Masjid Al-Muhajirin"
+                  alt="Logo AL-Muhajirin"
                   style={{ width: 42, height: 42, objectFit: 'contain' }}
                 />
                 <div style={{ textAlign: 'left' }}>
                   <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--primary-dark)', margin: 0 }}>
-                    DKM MASJID AL-MUHAJIRIN
+                    DKM AL-MUHAJIRIN
                   </h4>
                   <p style={{ fontSize: '0.68rem', color: '#64748b', margin: 0 }}>
                     Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi
@@ -375,7 +375,7 @@ export const ZakatInputModal: React.FC<ZakatInputModalProps> = ({
               {/* QR Verification Simulation */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#64748b', fontSize: '0.75rem' }}>
                 <QrCode size={36} style={{ color: 'var(--primary)' }} />
-                <span>Terverifikasi Sah oleh Petugas Amil DKM Masjid Al-Muhajirin</span>
+                <span>Terverifikasi Sah oleh Petugas Amil DKM AL-Muhajirin</span>
               </div>
             </div>
 
@@ -383,7 +383,7 @@ export const ZakatInputModal: React.FC<ZakatInputModalProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  const text = `*BUKTI SERAH TERIMA ZAKAT MASJID AL-MUHAJIRIN (BEKASI)*%0ANo: ${generatedKupon.noKupon}%0AMuzakki: ${generatedKupon.namaMuzakki}%0AJenis: ${generatedKupon.jenisZakat}%0ATotal: ${generatedKupon.nominalRp ? formatRupiah(generatedKupon.nominalRp) : generatedKupon.jumlahBerasKg + ' Kg Beras'}%0AAlamat: Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi%0A%0A_Jazakumullahu Khairan Katsiran._`;
+                  const text = `*BUKTI SERAH TERIMA ZAKAT AL-MUHAJIRIN (BEKASI)*%0ANo: ${generatedKupon.noKupon}%0AMuzakki: ${generatedKupon.namaMuzakki}%0AJenis: ${generatedKupon.jenisZakat}%0ATotal: ${generatedKupon.nominalRp ? formatRupiah(generatedKupon.nominalRp) : generatedKupon.jumlahBerasKg + ' Kg Beras'}%0AAlamat: Jl. Maskoki Raya Perumnas 2 Kayuringin Jaya Bekasi%0A%0A_Jazakumullahu Khairan Katsiran._`;
                   window.open(`https://wa.me/?text=${text}`, '_blank');
                 }}
                 className="btn-primary"

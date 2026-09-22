@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
           }}
         >
           <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981' }} />
-          <span>Masjid Al-Muhajirin (Kayuringin Jaya, Bekasi)</span>
+          <span>AL-Muhajirin (Kayuringin Jaya, Bekasi)</span>
         </div>
       </div>
 
