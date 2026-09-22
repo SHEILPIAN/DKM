@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "build:static": "next build && npx cap sync android",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "lint": "next lint",
     "android:sync": "npx cap sync android",
     "android:open": "npx cap open android",
