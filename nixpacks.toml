@@ -4,5 +4,8 @@ nixPkgs = ["nodejs_20", "npm"]
 [phases.build]
 cmds = ["npm install", "npx prisma generate", "npm run build"]
 
+[variables]
+PORT = "3000"
+
 [start]
-cmd = "npm run start -- -p ${PORT:-3000}"
+cmd = "npm run start -- -p 3000"
