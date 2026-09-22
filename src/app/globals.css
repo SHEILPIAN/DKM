@@ -1003,9 +1003,10 @@ body {
   background-position: center 20%;
   color: white;
   padding: 16px 18px 18px;
-  position: relative;
+  position: sticky;
+  top: 0;
   overflow: hidden;
-  z-index: 2;
+  z-index: 30;
 }
 
 .maslam-header::before {
@@ -1090,7 +1091,9 @@ body {
   background: linear-gradient(135deg, #093c78 0%, #062b59 100%);
   color: white;
   padding: 16px 18px 20px;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .maslam-sub-header.teal {

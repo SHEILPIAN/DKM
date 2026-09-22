@@ -244,7 +244,7 @@ export const MaslamKegiatan: React.FC<MaslamKegiatanProps> = ({
         style={{
           background: 'linear-gradient(135deg, #e11d48 0%, #be123c 100%)',
           color: 'white',
-          padding: '16px 18px 20px',
+          padding: '16px 18px 20px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>

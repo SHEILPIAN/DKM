@@ -279,7 +279,7 @@ export const MaslamAdministrasi: React.FC<MaslamAdministrasiProps> = ({
         style={{
           background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
           color: 'white',
-          padding: '16px 18px 20px',
+          padding: '16px 18px 20px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>
