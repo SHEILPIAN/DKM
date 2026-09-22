@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft,
   Info,
@@ -14,6 +15,10 @@ import {
   MapPin,
   HeartHandshake,
   UserCheck,
+  Plus,
+  Edit3,
+  Trash2,
+  Share2,
 } from 'lucide-react';
 import { Warga } from '@/types/dkm';
 
@@ -21,16 +26,23 @@ interface MaslamWargaProps {
   onBack: () => void;
   wargaList: Warga[];
   onAddWarga: (warga: Omit<Warga, 'id' | 'tanggalDaftar'>) => void;
+  onUpdateWarga?: (warga: Warga) => void;
+  onDeleteWarga?: (id: number) => void;
 }
 
 export const MaslamWarga: React.FC<MaslamWargaProps> = ({
   onBack,
   wargaList,
   onAddWarga,
+  onUpdateWarga,
+  onDeleteWarga,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterMustahikOnly, setFilterMustahikOnly] = useState(false);
-  const [isInputModalOpen, setIsInputModalOpen] = useState(false);
+
+  // Modals
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingWarga, setEditingWarga] = useState<Warga | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isQueueModalOpen, setIsQueueModalOpen] = useState(false);
 
@@ -46,55 +58,172 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
   const [umur, setUmur] = useState<number>(35);
   const [isMustahik, setIsMustahik] = useState(false);
   const [pekerjaan, setPekerjaan] = useState('');
+  const [statusKeluarga, setStatusKeluarga] = useState<'KEPALA_KELUARGA' | 'ISTRI' | 'ANAK' | 'LAINNYA'>('KEPALA_KELUARGA');
 
-  // Total metrics matching Screenshot 3
-  const totalWargaCount = 691;
-  const totalMustahikCount = 64;
+  // Toast
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 2500);
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nama.trim()) {
-      alert('Mohon isi nama warga.');
-      return;
-    }
+  // Dynamic Metrics based on current wargaList
+  const totalWargaCount = wargaList.length;
+  const totalMustahikCount = wargaList.filter((w) => w.isMustahik).length;
+  const ikhwanCount = wargaList.filter((w) => w.gender === 'IKHWAN').length;
+  const akhwatCount = wargaList.filter((w) => w.gender === 'AKHWAT').length;
+  const ikhwanPercent = totalWargaCount > 0 ? Math.round((ikhwanCount / totalWargaCount) * 100) : 50;
+  const akhwatPercent = 100 - ikhwanPercent;
 
-    onAddWarga({
-      nama,
-      nik,
-      noHp: noHp || '081234567890',
-      alamat: alamat || `Jl. Maskoki RT ${rt}/RW ${rw}`,
-      rt,
-      rw,
-      gender,
-      kategoriUmur,
-      umur: Number(umur) || 30,
-      isMustahik,
-      statusKeluarga: 'KEPALA_KELUARGA',
-      pekerjaan: pekerjaan || 'Warga Tetap',
-    });
+  // Age Breakdown
+  const dewasaCount = wargaList.filter((w) => w.kategoriUmur === 'DEWASA').length;
+  const remajaCount = wargaList.filter((w) => w.kategoriUmur === 'REMAJA').length;
+  const lansiaCount = wargaList.filter((w) => w.kategoriUmur === 'LANSIA').length;
+  const anakCount = wargaList.filter((w) => w.kategoriUmur === 'ANAK').length;
 
-    setIsInputModalOpen(false);
-    // Reset
+  const dewasaPercent = totalWargaCount > 0 ? Math.round((dewasaCount / totalWargaCount) * 100) : 0;
+  const remajaPercent = totalWargaCount > 0 ? Math.round((remajaCount / totalWargaCount) * 100) : 0;
+  const lansiaPercent = totalWargaCount > 0 ? Math.round((lansiaCount / totalWargaCount) * 100) : 0;
+  const anakPercent = totalWargaCount > 0 ? Math.round((anakCount / totalWargaCount) * 100) : 0;
+
+  // -------------------------------------------------------------
+  // OPEN MODAL HANDLERS
+  // -------------------------------------------------------------
+  const handleOpenAdd = () => {
+    setEditingWarga(null);
     setNama('');
     setNik('');
     setNoHp('');
     setAlamat('');
+    setRt('02');
+    setRw('08');
+    setGender('IKHWAN');
+    setKategoriUmur('DEWASA');
+    setUmur(35);
+    setIsMustahik(false);
     setPekerjaan('');
-    alert('Alhamdulillah! Data warga baru berhasil disimpan ke database DKM.');
+    setStatusKeluarga('KEPALA_KELUARGA');
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (w: Warga) => {
+    setEditingWarga(w);
+    setNama(w.nama);
+    setNik(w.nik || '');
+    setNoHp(w.noHp);
+    setAlamat(w.alamat);
+    setRt(w.rt);
+    setRw(w.rw);
+    setGender(w.gender);
+    setKategoriUmur(w.kategoriUmur);
+    setUmur(w.umur);
+    setIsMustahik(w.isMustahik);
+    setPekerjaan(w.pekerjaan || '');
+    setStatusKeluarga(w.statusKeluarga);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nama.trim()) {
+      alert('Mohon isi nama lengkap warga.');
+      return;
+    }
+
+    if (editingWarga) {
+      // Edit
+      const updated: Warga = {
+        ...editingWarga,
+        nama: nama.trim(),
+        nik: nik.trim() || undefined,
+        noHp: noHp.trim() || '081234567890',
+        alamat: alamat.trim() || `Jl. Maskoki RT ${rt}/RW ${rw}`,
+        rt,
+        rw,
+        gender,
+        kategoriUmur,
+        umur: Number(umur) || 30,
+        isMustahik,
+        statusKeluarga,
+        pekerjaan: pekerjaan.trim() || 'Warga Tetap',
+      };
+
+      if (onUpdateWarga) onUpdateWarga(updated);
+      showToast('Data warga berhasil diperbarui!');
+    } else {
+      // Tambah Baru
+      onAddWarga({
+        nama: nama.trim(),
+        nik: nik.trim() || undefined,
+        noHp: noHp.trim() || '081234567890',
+        alamat: alamat.trim() || `Jl. Maskoki RT ${rt}/RW ${rw}`,
+        rt,
+        rw,
+        gender,
+        kategoriUmur,
+        umur: Number(umur) || 30,
+        isMustahik,
+        statusKeluarga,
+        pekerjaan: pekerjaan.trim() || 'Warga Tetap',
+      });
+      showToast('Data warga baru berhasil ditambahkan!');
+    }
+
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = (id: number, namaWarga: string) => {
+    if (window.confirm(`Yakin ingin menghapus data warga "${namaWarga}"?`)) {
+      if (onDeleteWarga) onDeleteWarga(id);
+      showToast('Data warga berhasil dihapus.');
+    }
   };
 
   const filteredWarga = wargaList.filter((w) => {
     const matchSearch =
       w.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
       w.alamat.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      w.noHp.includes(searchQuery);
+      w.noHp.includes(searchQuery) ||
+      `rt ${w.rt}`.toLowerCase().includes(searchQuery.toLowerCase());
     const matchMustahik = filterMustahikOnly ? w.isMustahik : true;
     return matchSearch && matchMustahik;
   });
 
   return (
-    <div style={{ paddingBottom: 80 }}>
-      {/* 1. Teal Sub-Header (Screenshot 3) */}
+    <div style={{ paddingBottom: 85, position: 'relative' }}>
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            style={{
+              position: 'fixed',
+              top: 20,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 9999,
+              background: '#0f172a',
+              color: '#ffffff',
+              padding: '10px 20px',
+              borderRadius: 30,
+              boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              fontSize: '0.84rem',
+              fontWeight: 600,
+              border: '1px solid #334155',
+            }}
+          >
+            <CheckCircle2 size={16} color="#10b981" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 1. Teal Sub-Header */}
       <div
         style={{
           background: 'linear-gradient(135deg, #094b5c 0%, #06333f 100%)',
@@ -104,7 +233,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
           overflow: 'hidden',
         }}
       >
-        {/* Geometric Star Pattern Overlay */}
+        {/* Geometric Overlay */}
         <div
           style={{
             position: 'absolute',
@@ -121,7 +250,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
           }}
         />
 
-        {/* Top Nav: Back | Title | Info */}
+        {/* Top Nav: Back | Title | Action Buttons */}
         <div
           style={{
             display: 'flex',
@@ -143,34 +272,50 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               alignItems: 'center',
               cursor: 'pointer',
               padding: 0,
+              gap: 4,
             }}
           >
             <ChevronLeft size={24} />
+            <span style={{ fontSize: '0.92rem', fontWeight: 700 }}>Kembali</span>
           </button>
 
-          <span
-            style={{
-              fontSize: '1.05rem',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-            }}
-          >
-            WARGA
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="button"
+              onClick={handleOpenAdd}
+              style={{
+                background: 'rgba(255, 255, 255, 0.22)',
+                border: '1px solid rgba(255, 255, 255, 0.4)',
+                color: 'white',
+                borderRadius: 8,
+                padding: '6px 12px',
+                fontSize: '0.74rem',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                cursor: 'pointer',
+                backdropFilter: 'blur(4px)',
+              }}
+            >
+              <Plus size={14} />
+              <span>+ Tambah Warga</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setIsInfoModalOpen(true)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'white',
-              cursor: 'pointer',
-              padding: 0,
-            }}
-          >
-            <Info size={22} />
-          </button>
+            <button
+              type="button"
+              onClick={() => setIsInfoModalOpen(true)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'white',
+                cursor: 'pointer',
+                padding: 0,
+              }}
+            >
+              <Info size={22} />
+            </button>
+          </div>
         </div>
 
         {/* Big Title & Subtitle */}
@@ -183,7 +328,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               margin: 0,
             }}
           >
-            WARGA
+            DATABASE WARGA
           </h2>
           <p
             style={{
@@ -194,12 +339,12 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               margin: 0,
             }}
           >
-            AL-MUHAJIRIN KAYURINGIN BEKASI
+            AL-MUHAJIRIN KAYURINGIN JAYA BEKASI
           </p>
         </div>
       </div>
 
-      {/* 2. Banner: 0 Warga Ingin Bergabung (Screenshot 3) */}
+      {/* 2. Banner: Warga Ingin Bergabung */}
       <div style={{ padding: '14px 16px 8px' }}>
         <div
           onClick={() => setIsQueueModalOpen(true)}
@@ -236,17 +381,17 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
                 color: '#1e3a8a',
               }}
             >
-              0 Warga ingin bergabung
+              0 Warga ingin bergabung (Antrean Verifikasi)
             </span>
           </div>
           <ChevronRight size={18} style={{ color: '#1d4ed8' }} />
         </div>
       </div>
 
-      {/* 3. Action Card: Input Data Warga (Screenshot 3) */}
+      {/* 3. Action Card: Input Data Warga */}
       <div style={{ padding: '0 16px 12px' }}>
         <div
-          onClick={() => setIsInputModalOpen(true)}
+          onClick={handleOpenAdd}
           style={{
             background: '#ffffff',
             borderRadius: 16,
@@ -274,35 +419,21 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               flexShrink: 0,
             }}
           >
-            {/* Notepad pencil icon */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#0284c7"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="12" y1="18" x2="8" y2="18" />
-              <line x1="16" y1="14" x2="8" y2="14" />
-            </svg>
+            <UserPlus size={22} color="#0284c7" />
           </div>
-          <div>
+          <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a' }}>
-              Input Data Warga
+              Input Data Warga Baru
             </div>
             <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: 2 }}>
-              Masukkan Data Warga Baru
+              Klik untuk menambahkan kepala keluarga / jamaah baru
             </div>
           </div>
+          <ChevronRight size={18} color="#94a3b8" />
         </div>
       </div>
 
-      {/* 4. Dual Metric Cards: Jumlah Warga & Mustahik (Screenshot 3) */}
+      {/* 4. Top 2 Metrics Cards: Total Warga & Mustahik */}
       <div
         style={{
           display: 'grid',
@@ -311,7 +442,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
           padding: '0 16px 14px',
         }}
       >
-        {/* Card 1: Jumlah Warga */}
+        {/* Card 1: Total Warga */}
         <div
           style={{
             background: '#ffffff',
@@ -323,32 +454,32 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
         >
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
+              width: 38,
+              height: 38,
+              borderRadius: 12,
+              background: '#fef3c7',
+              border: '1px solid #fde047',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'white',
-              marginBottom: 8,
-              boxShadow: '0 3px 8px rgba(6, 182, 212, 0.3)',
+              marginBottom: 10,
+              fontSize: '1.2rem',
             }}
           >
-            <Users size={18} />
+            👥
           </div>
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>
-            Jumlah Warga
+          <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b' }}>
+            Total Terdata
           </div>
           <div
             style={{
               fontSize: '1.45rem',
               fontWeight: 900,
-              color: '#0284c7',
-              marginTop: 4,
+              color: '#0f172a',
+              marginTop: 2,
             }}
           >
-            {totalWargaCount}
+            {totalWargaCount} <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8' }}>Jiwa</span>
           </div>
         </div>
 
@@ -364,21 +495,21 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
         >
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
+              width: 38,
+              height: 38,
+              borderRadius: 12,
+              background: '#e0f2fe',
+              border: '1px solid #bae6fd',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'white',
-              marginBottom: 8,
-              boxShadow: '0 3px 8px rgba(6, 182, 212, 0.3)',
+              marginBottom: 10,
+              fontSize: '1.2rem',
             }}
           >
-            <Users size={18} />
+            🤝
           </div>
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>
+          <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b' }}>
             Mustahik
           </div>
           <div
@@ -386,15 +517,15 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               fontSize: '1.45rem',
               fontWeight: 900,
               color: '#0284c7',
-              marginTop: 4,
+              marginTop: 2,
             }}
           >
-            {totalMustahikCount}
+            {totalMustahikCount} <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8' }}>Jiwa</span>
           </div>
         </div>
       </div>
 
-      {/* 5. Card: Statistik by Gender (Screenshot 3) */}
+      {/* 5. Card: Statistik by Gender */}
       <div style={{ padding: '0 16px 14px' }}>
         <div
           style={{
@@ -405,8 +536,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
           }}
         >
-          {/* Header Title with Mosque / User Icon */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
             <div
               style={{
                 width: 32,
@@ -417,7 +547,6 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#b45309',
               }}
             >
               🕌
@@ -427,133 +556,62 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             </span>
           </div>
 
-          {/* SVG Donut Chart (50% Gold/Peach Akhwat + 50% Navy Blue Ikhwan) */}
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '14px 0 20px' }}>
-            <div style={{ position: 'relative', width: 170, height: 170 }}>
-              <svg width="170" height="170" viewBox="0 0 100 100">
-                {/* Background circle */}
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f1f5f9" strokeWidth="18" />
-                
-                {/* Top Half (50% Akhwat - Peach/Gold) */}
-                {/* Circumference = 2 * PI * 40 ≈ 251.32. 50% = 125.66 */}
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="transparent"
-                  stroke="#f6ad55"
-                  strokeWidth="18"
-                  strokeDasharray="125.66 125.66"
-                  strokeDashoffset="0"
-                  transform="rotate(-90 50 50)"
-                />
-
-                {/* Bottom Half (50% Ikhwan - Navy Blue) */}
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="transparent"
-                  stroke="#0f3d68"
-                  strokeWidth="18"
-                  strokeDasharray="125.66 125.66"
-                  strokeDashoffset="125.66"
-                  transform="rotate(-90 50 50)"
-                />
-              </svg>
-
-              {/* Center percentage text */}
+          {/* Progress Bar Gender */}
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ height: 12, background: '#f1f5f9', borderRadius: 999, overflow: 'hidden', display: 'flex' }}>
               <div
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  pointerEvents: 'none',
+                  width: `${ikhwanPercent}%`,
+                  background: 'linear-gradient(90deg, #094b5c, #0284c7)',
+                  transition: 'width 0.3s',
                 }}
-              >
-                <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>
-                  50% : 50%
-                </span>
-                <span style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: 600 }}>
-                  Perbandingan
-                </span>
-              </div>
+              />
+              <div
+                style={{
+                  width: `${akhwatPercent}%`,
+                  background: 'linear-gradient(90deg, #f97316, #ea580c)',
+                  transition: 'width 0.3s',
+                }}
+              />
             </div>
           </div>
 
-          {/* Legend Row: Left 50% Akhwat | Right 50% Ikhwan */}
+          {/* Legend Row */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-around',
-              paddingTop: 10,
+              paddingTop: 8,
               borderTop: '1px solid #f1f5f9',
             }}
           >
-            {/* Akhwat */}
+            {/* Ikhwan */}
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#ea580c' }}>
-                50%
+              <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0284c7' }}>
+                {ikhwanPercent}%
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 5,
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  color: '#334155',
-                  marginTop: 3,
-                }}
-              >
-                <span>🧕</span>
-                <span>Akhwat</span>
-              </div>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: 2 }}>
-                345 Jiwa
+              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155', marginTop: 2 }}>
+                🧔 Ikhwan ({ikhwanCount} Jiwa)
               </div>
             </div>
 
-            {/* Vertical Divider */}
-            <div style={{ width: 1, height: 36, background: '#e2e8f0' }} />
+            <div style={{ width: 1, height: 32, background: '#e2e8f0' }} />
 
-            {/* Ikhwan */}
+            {/* Akhwat */}
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f3d68' }}>
-                50%
+              <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#ea580c' }}>
+                {akhwatPercent}%
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 5,
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  color: '#334155',
-                  marginTop: 3,
-                }}
-              >
-                <span>🧔</span>
-                <span>Ikhwan</span>
-              </div>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: 2 }}>
-                346 Jiwa
+              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155', marginTop: 2 }}>
+                🧕 Akhwat ({akhwatCount} Jiwa)
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 6. Card: Statistik Umur Warga (Screenshot 3) */}
+      {/* 6. Card: Statistik Umur Warga */}
       <div style={{ padding: '0 16px 14px' }}>
         <div
           style={{
@@ -564,8 +622,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
           }}
         >
-          {/* Header Title */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
             <div
               style={{
                 width: 32,
@@ -576,26 +633,24 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#b45309',
               }}
             >
-              🕌
+              📊
             </div>
             <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a' }}>
               Statistik Umur Warga
             </span>
           </div>
 
-          {/* Age Demographics Breakdown Bars */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {/* Dewasa */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: 4 }}>
                 <span style={{ fontWeight: 700, color: '#1e293b' }}>Dewasa (21 - 55 th)</span>
-                <span style={{ fontWeight: 800, color: '#0284c7' }}>296 Jiwa (43%)</span>
+                <span style={{ fontWeight: 800, color: '#0284c7' }}>{dewasaCount} Jiwa ({dewasaPercent}%)</span>
               </div>
               <div style={{ height: 8, background: '#f1f5f9', borderRadius: 999, overflow: 'hidden' }}>
-                <div style={{ width: '43%', height: '100%', background: '#0284c7', borderRadius: 999 }} />
+                <div style={{ width: `${dewasaPercent}%`, height: '100%', background: '#0284c7', borderRadius: 999 }} />
               </div>
             </div>
 
@@ -603,10 +658,10 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: 4 }}>
                 <span style={{ fontWeight: 700, color: '#1e293b' }}>Remaja (13 - 20 th)</span>
-                <span style={{ fontWeight: 800, color: '#10b981' }}>155 Jiwa (22%)</span>
+                <span style={{ fontWeight: 800, color: '#10b981' }}>{remajaCount} Jiwa ({remajaPercent}%)</span>
               </div>
               <div style={{ height: 8, background: '#f1f5f9', borderRadius: 999, overflow: 'hidden' }}>
-                <div style={{ width: '22%', height: '100%', background: '#10b981', borderRadius: 999 }} />
+                <div style={{ width: `${remajaPercent}%`, height: '100%', background: '#10b981', borderRadius: 999 }} />
               </div>
             </div>
 
@@ -614,10 +669,10 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: 4 }}>
                 <span style={{ fontWeight: 700, color: '#1e293b' }}>Lansia (&gt; 55 th)</span>
-                <span style={{ fontWeight: 800, color: '#f59e0b' }}>120 Jiwa (18%)</span>
+                <span style={{ fontWeight: 800, color: '#f59e0b' }}>{lansiaCount} Jiwa ({lansiaPercent}%)</span>
               </div>
               <div style={{ height: 8, background: '#f1f5f9', borderRadius: 999, overflow: 'hidden' }}>
-                <div style={{ width: '18%', height: '100%', background: '#f59e0b', borderRadius: 999 }} />
+                <div style={{ width: `${lansiaPercent}%`, height: '100%', background: '#f59e0b', borderRadius: 999 }} />
               </div>
             </div>
 
@@ -625,10 +680,10 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: 4 }}>
                 <span style={{ fontWeight: 700, color: '#1e293b' }}>Anak-anak (&lt; 13 th)</span>
-                <span style={{ fontWeight: 800, color: '#ec4899' }}>120 Jiwa (17%)</span>
+                <span style={{ fontWeight: 800, color: '#ec4899' }}>{anakCount} Jiwa ({anakPercent}%)</span>
               </div>
               <div style={{ height: 8, background: '#f1f5f9', borderRadius: 999, overflow: 'hidden' }}>
-                <div style={{ width: '17%', height: '100%', background: '#ec4899', borderRadius: 999 }} />
+                <div style={{ width: `${anakPercent}%`, height: '100%', background: '#ec4899', borderRadius: 999 }} />
               </div>
             </div>
           </div>
@@ -638,25 +693,51 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
       {/* 7. Directory List of Warga (Interactive Database) */}
       <div style={{ padding: '0 16px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-          <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>
-            Daftar Kartu Warga Terdata ({filteredWarga.length})
-          </span>
-          <button
-            type="button"
-            onClick={() => setFilterMustahikOnly(!filterMustahikOnly)}
-            style={{
-              background: filterMustahikOnly ? '#ecfdf5' : '#f8fafc',
-              border: `1px solid ${filterMustahikOnly ? '#10b981' : '#cbd5e1'}`,
-              color: filterMustahikOnly ? '#059669' : '#64748b',
-              padding: '4px 10px',
-              borderRadius: 8,
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            {filterMustahikOnly ? '✓ Hanya Mustahik' : 'Filter Mustahik'}
-          </button>
+          <div>
+            <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a' }}>
+              Daftar Kartu Warga ({filteredWarga.length})
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <button
+              type="button"
+              onClick={() => setFilterMustahikOnly(!filterMustahikOnly)}
+              style={{
+                background: filterMustahikOnly ? '#ecfdf5' : '#f8fafc',
+                border: `1px solid ${filterMustahikOnly ? '#10b981' : '#cbd5e1'}`,
+                color: filterMustahikOnly ? '#059669' : '#64748b',
+                padding: '5px 10px',
+                borderRadius: 8,
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              {filterMustahikOnly ? '✓ Mustahik' : 'Filter Mustahik'}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleOpenAdd}
+              style={{
+                background: '#094b5c',
+                color: 'white',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: 8,
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+                cursor: 'pointer',
+              }}
+            >
+              <Plus size={13} />
+              <span>Tambah</span>
+            </button>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -680,9 +761,18 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
               outline: 'none',
             }}
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+            >
+              <X size={15} />
+            </button>
+          )}
         </div>
 
-        {/* Warga Cards */}
+        {/* Warga Cards with EDIT & HAPUS buttons */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {filteredWarga.map((w) => (
             <div
@@ -695,26 +785,29 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.02)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
                 <div
                   style={{
-                    width: 40,
-                    height: 40,
+                    width: 42,
+                    height: 42,
                     borderRadius: '50%',
                     background: w.gender === 'IKHWAN' ? '#dbeafe' : '#fce7f3',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '1.1rem',
+                    fontSize: '1.2rem',
+                    flexShrink: 0,
                   }}
                 >
                   {w.gender === 'IKHWAN' ? '🧔' : '🧕'}
                 </div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#0f172a' }}>
+
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <span style={{ fontWeight: 800, fontSize: '0.88rem', color: '#0f172a' }}>
                       {w.nama}
                     </span>
                     {w.isMustahik && (
@@ -736,313 +829,548 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
                   <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 2 }}>
                     RT {w.rt}/RW {w.rw} • {w.pekerjaan || 'Warga'} • {w.umur} th
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#0369a1', marginTop: 1 }}>
-                    {w.noHp}
+                  <div style={{ fontSize: '0.7rem', color: '#0369a1', marginTop: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Phone size={11} />
+                    <span>{w.noHp}</span>
                   </div>
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => alert(`Detail Warga: ${w.nama}\nAlamat: ${w.alamat}\nStatus: ${w.isMustahik ? 'Penerima Bantuan (Mustahik)' : 'Muzakki / Warga Mampu'}\nNo. HP: ${w.noHp}`)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#94a3b8',
-                  cursor: 'pointer',
-                  padding: 4,
-                }}
-              >
-                <ChevronRight size={18} />
-              </button>
+              {/* Action Buttons: Edit & Delete */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, marginLeft: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => handleOpenEdit(w)}
+                  title="Edit Data Warga"
+                  style={{
+                    background: '#f8fafc',
+                    border: '1px solid #cbd5e1',
+                    color: '#334155',
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Edit3 size={14} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleDelete(w.id, w.nama)}
+                  title="Hapus Warga"
+                  style={{
+                    background: '#fef2f2',
+                    border: '1px solid #fecaca',
+                    color: '#dc2626',
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
             </div>
           ))}
+
+          {filteredWarga.length === 0 && (
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '30px 20px',
+                background: '#ffffff',
+                borderRadius: 14,
+                border: '1px dashed #cbd5e1',
+                color: '#94a3b8',
+                fontSize: '0.84rem',
+              }}
+            >
+              Data warga tidak ditemukan. Klik tombol <strong>+ Tambah Warga</strong> di atas.
+            </div>
+          )}
         </div>
       </div>
 
-      {/* MODAL: Input Data Warga */}
-      {isInputModalOpen && (
-        <div className="modal-overlay" style={{ zIndex: 120 }}>
-          <div className="modal-card" style={{ maxWidth: 420 }}>
-            <div className="modal-header">
-              <h3 className="modal-title">Form Input Data Warga</h3>
-              <button
-                type="button"
-                onClick={() => setIsInputModalOpen(false)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+      {/* ======================================================= */}
+      {/* MODAL: INPUT / EDIT DATA WARGA                          */}
+      {/* ======================================================= */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(4px)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 16,
+            }}
+            onClick={() => setIsModalOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#ffffff',
+                borderRadius: 20,
+                width: '100%',
+                maxWidth: 440,
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+              }}
+            >
+              <div
+                style={{
+                  padding: '16px 20px',
+                  borderBottom: '1px solid #e2e8f0',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  background: '#f8fafc',
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                }}
               >
-                <X size={20} />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                  Nama Lengkap Warga *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Contoh: Bpk. Muhammad Zaki"
-                  value={nama}
-                  onChange={(e) => setNama(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '9px 12px',
-                    borderRadius: 8,
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.85rem',
-                    marginTop: 4,
-                  }}
-                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <Users size={18} color="#094b5c" />
+                  <span style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>
+                    {editingWarga ? 'Edit Data Warga' : 'Form Input Data Warga'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+                >
+                  <X size={20} />
+                </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                    Jenis Kelamin *
-                  </label>
-                  <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value as any)}
+              <form onSubmit={handleSubmit} style={{ padding: '18px 20px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                      Nama Lengkap Warga *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Contoh: Bpk. Muhammad Zaki"
+                      value={nama}
+                      onChange={(e) => setNama(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px',
+                        borderRadius: 10,
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                        Jenis Kelamin *
+                      </label>
+                      <select
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value as any)}
+                        style={{
+                          width: '100%',
+                          padding: '9px 10px',
+                          borderRadius: 10,
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.85rem',
+                          background: '#ffffff',
+                          fontWeight: 600,
+                        }}
+                      >
+                        <option value="IKHWAN">🧔 Ikhwan (Laki-laki)</option>
+                        <option value="AKHWAT">🧕 Akhwat (Perempuan)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                        Umur (Tahun) *
+                      </label>
+                      <input
+                        type="number"
+                        required
+                        value={umur}
+                        onChange={(e) => {
+                          const val = Number(e.target.value);
+                          setUmur(val);
+                          if (val < 13) setKategoriUmur('ANAK');
+                          else if (val <= 20) setKategoriUmur('REMAJA');
+                          else if (val <= 55) setKategoriUmur('DEWASA');
+                          else setKategoriUmur('LANSIA');
+                        }}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: 10,
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.85rem',
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                        RT (Rukun Tetangga)
+                      </label>
+                      <select
+                        value={rt}
+                        onChange={(e) => setRt(e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '9px 10px',
+                          borderRadius: 10,
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.85rem',
+                          background: '#ffffff',
+                        }}
+                      >
+                        <option value="01">RT 01</option>
+                        <option value="02">RT 02</option>
+                        <option value="03">RT 03</option>
+                        <option value="04">RT 04</option>
+                        <option value="05">RT 05</option>
+                        <option value="06">RT 06</option>
+                        <option value="07">RT 07</option>
+                        <option value="08">RT 08</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                        RW (Kayuringin)
+                      </label>
+                      <input
+                        type="text"
+                        value={rw}
+                        onChange={(e) => setRw(e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: 10,
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.85rem',
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                      Nomor WhatsApp / HP
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Contoh: 0812-3456-7890"
+                      value={noHp}
+                      onChange={(e) => setNoHp(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px',
+                        borderRadius: 10,
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.85rem',
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                      Alamat Lengkap
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Contoh: Jl. Maskoki 3 No. 15"
+                      value={alamat}
+                      onChange={(e) => setAlamat(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px',
+                        borderRadius: 10,
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.85rem',
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                        Pekerjaan / Profesi
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Contoh: Wiraswasta / Guru"
+                        value={pekerjaan}
+                        onChange={(e) => setPekerjaan(e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: 10,
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.85rem',
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}>
+                        Status Keluarga
+                      </label>
+                      <select
+                        value={statusKeluarga}
+                        onChange={(e) => setStatusKeluarga(e.target.value as any)}
+                        style={{
+                          width: '100%',
+                          padding: '9px 10px',
+                          borderRadius: 10,
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.85rem',
+                          background: '#ffffff',
+                        }}
+                      >
+                        <option value="KEPALA_KELUARGA">Kepala Keluarga</option>
+                        <option value="ISTRI">Istri</option>
+                        <option value="ANAK">Anak</option>
+                        <option value="LAINNYA">Lainnya</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div
                     style={{
-                      width: '100%',
-                      padding: '9px 10px',
-                      borderRadius: 8,
-                      border: '1px solid #cbd5e1',
-                      fontSize: '0.85rem',
-                      marginTop: 4,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 10,
+                      background: isMustahik ? '#ecfdf5' : '#f8fafc',
+                      padding: '10px 14px',
+                      borderRadius: 10,
+                      border: isMustahik ? '1px solid #a7f3d0' : '1px solid #e2e8f0',
                     }}
                   >
-                    <option value="IKHWAN">Ikhwan (Laki-laki)</option>
-                    <option value="AKHWAT">Akhwat (Perempuan)</option>
-                  </select>
+                    <input
+                      type="checkbox"
+                      id="mustahikCheckModal"
+                      checked={isMustahik}
+                      onChange={(e) => setIsMustahik(e.target.checked)}
+                      style={{ width: 18, height: 18, cursor: 'pointer' }}
+                    />
+                    <label
+                      htmlFor="mustahikCheckModal"
+                      style={{
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        color: isMustahik ? '#059669' : '#1e293b',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Kategori Mustahik (Penerima Manfaat Zakat & Santunan DKM)
+                    </label>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(false)}
+                      style={{
+                        flex: 1,
+                        padding: '11px',
+                        borderRadius: 10,
+                        border: '1px solid #cbd5e1',
+                        background: '#ffffff',
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        color: '#64748b',
+                      }}
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      style={{
+                        flex: 2,
+                        padding: '11px',
+                        borderRadius: 10,
+                        border: 'none',
+                        background: '#094b5c',
+                        color: 'white',
+                        fontSize: '0.85rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 12px rgba(9, 75, 92, 0.3)',
+                      }}
+                    >
+                      {editingWarga ? 'Simpan Perubahan' : 'Tambah Warga'}
+                    </button>
+                  </div>
                 </div>
-
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                    Umur (Tahun)
-                  </label>
-                  <input
-                    type="number"
-                    value={umur}
-                    onChange={(e) => {
-                      const val = Number(e.target.value);
-                      setUmur(val);
-                      if (val < 13) setKategoriUmur('ANAK');
-                      else if (val <= 20) setKategoriUmur('REMAJA');
-                      else if (val <= 55) setKategoriUmur('DEWASA');
-                      else setKategoriUmur('LANSIA');
-                    }}
-                    style={{
-                      width: '100%',
-                      padding: '9px 12px',
-                      borderRadius: 8,
-                      border: '1px solid #cbd5e1',
-                      fontSize: '0.85rem',
-                      marginTop: 4,
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                    RT (Rukun Tetangga)
-                  </label>
-                  <select
-                    value={rt}
-                    onChange={(e) => setRt(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '9px 10px',
-                      borderRadius: 8,
-                      border: '1px solid #cbd5e1',
-                      fontSize: '0.85rem',
-                      marginTop: 4,
-                    }}
-                  >
-                    <option value="01">RT 01</option>
-                    <option value="02">RT 02</option>
-                    <option value="03">RT 03</option>
-                    <option value="04">RT 04</option>
-                    <option value="05">RT 05</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                    RW (Kayuringin)
-                  </label>
-                  <input
-                    type="text"
-                    value={rw}
-                    onChange={(e) => setRw(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '9px 12px',
-                      borderRadius: 8,
-                      border: '1px solid #cbd5e1',
-                      fontSize: '0.85rem',
-                      marginTop: 4,
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                  No. WhatsApp / HP
-                </label>
-                <input
-                  type="text"
-                  placeholder="0812xxxxxxxx"
-                  value={noHp}
-                  onChange={(e) => setNoHp(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '9px 12px',
-                    borderRadius: 8,
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.85rem',
-                    marginTop: 4,
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
-                  Alamat Rumah
-                </label>
-                <input
-                  type="text"
-                  placeholder="Jl. Maskoki Raya No..."
-                  value={alamat}
-                  onChange={(e) => setAlamat(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '9px 12px',
-                    borderRadius: 8,
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.85rem',
-                    marginTop: 4,
-                  }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#f8fafc', padding: 12, borderRadius: 10 }}>
-                <input
-                  type="checkbox"
-                  id="mustahikCheck"
-                  checked={isMustahik}
-                  onChange={(e) => setIsMustahik(e.target.checked)}
-                  style={{ width: 18, height: 18, cursor: 'pointer' }}
-                />
-                <label htmlFor="mustahikCheck" style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1e293b', cursor: 'pointer' }}>
-                  Kategori Mustahik (Penerima Manfaat Zakat / Sembako DKM)
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center', marginTop: 10, padding: 12 }}
-              >
-                Simpan Data Warga
-              </button>
-            </form>
+              </form>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
-      {/* MODAL: Info Pendataan Warga */}
-      {isInfoModalOpen && (
-        <div className="modal-overlay" style={{ zIndex: 120 }}>
-          <div className="modal-card" style={{ maxWidth: 400 }}>
-            <div className="modal-header">
-              <h3 className="modal-title">Tentang Pendataan Warga</h3>
-              <button
-                type="button"
-                onClick={() => setIsInfoModalOpen(false)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="modal-body" style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.6 }}>
-              <p style={{ marginBottom: 10 }}>
-                <strong>Sistem Informasi Warga DKM AL-Muhajirin</strong> digunakan untuk mencatat basis data jamaah sekitar masjid di lingkungan Perumnas 2 Kayuringin Jaya Bekasi.
+      {/* Info Modal */}
+      <AnimatePresence>
+        {isInfoModalOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(4px)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 16,
+            }}
+            onClick={() => setIsInfoModalOpen(false)}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: 20,
+                width: '100%',
+                maxWidth: 380,
+                padding: '20px',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <span style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>
+                  Tentang Data Warga
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsInfoModalOpen(false)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: '#475569', lineHeight: 1.5 }}>
+                Modul Data Warga merekam sensus jamaah masjid di lingkungan Kayuringin Jaya. Data ini dipakai untuk pemetaan kupon qurban, penyaluran zakat fitrah ke 8 Asnaf mustahik, dan broadcast agenda pengajian.
               </p>
-              <ul style={{ paddingLeft: 18, marginBottom: 12 }}>
-                <li>Pemetaan demografi jamaah (Ikhwan/Akhwat & kelompok usia).</li>
-                <li>Penyaluran beras zakat fitrah & daging qurban yang tepat sasaran bagi 64 Mustahik.</li>
-                <li>Undangan kegiatan tabligh akbar dan majelis taklim terkoordinir via WhatsApp.</li>
-              </ul>
               <button
                 type="button"
                 onClick={() => setIsInfoModalOpen(false)}
-                className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center' }}
+                style={{
+                  width: '100%',
+                  marginTop: 14,
+                  padding: '10px',
+                  borderRadius: 10,
+                  background: '#094b5c',
+                  color: 'white',
+                  border: 'none',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
               >
                 Mengerti
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
-      {/* MODAL: Queue Warga Ingin Bergabung */}
-      {isQueueModalOpen && (
-        <div className="modal-overlay" style={{ zIndex: 120 }}>
-          <div className="modal-card" style={{ maxWidth: 400 }}>
-            <div className="modal-header">
-              <h3 className="modal-title">Pengajuan Warga Baru</h3>
+      {/* Queue Modal */}
+      <AnimatePresence>
+        {isQueueModalOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(4px)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 16,
+            }}
+            onClick={() => setIsQueueModalOpen(false)}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: 20,
+                width: '100%',
+                maxWidth: 380,
+                padding: '20px',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <span style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>
+                  Antrean Pendaftaran Warga
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsQueueModalOpen(false)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                <CheckCircle2 size={40} color="#10b981" style={{ margin: '0 auto 10px' }} />
+                <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a' }}>
+                  Tidak Ada Antrean Tertunda
+                </div>
+                <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 4 }}>
+                  Semua permohonan pendaftaran warga baru melalui formulir online jamaah telah terverifikasi.
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsQueueModalOpen(false)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="modal-body" style={{ textAlign: 'center', padding: '24px 16px' }}>
-              <div
                 style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: '50%',
-                  background: '#eff6ff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 12px',
-                  color: '#2563eb',
+                  width: '100%',
+                  marginTop: 10,
+                  padding: '10px',
+                  borderRadius: 10,
+                  background: '#094b5c',
+                  color: 'white',
+                  border: 'none',
+                  fontWeight: 700,
+                  cursor: 'pointer',
                 }}
               >
-                <CheckCircle2 size={32} />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', marginBottom: 6 }}>
-                Tidak Ada Antrean Pendaftaran
-              </h4>
-              <p style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5, marginBottom: 16 }}>
-                Semua permohonan registrasi warga baru lewat aplikasi HP telah tervalidasi oleh Sekretariat DKM.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsQueueModalOpen(false);
-                  setIsInputModalOpen(true);
-                }}
-                className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center' }}
-              >
-                + Tambah Warga Baru Manual
+                Tutup
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -287,6 +287,16 @@ export default function DkmApp() {
     setWarga((prev) => [created, ...prev]);
   };
 
+  const handleUpdateWarga = (updated: Warga) => {
+    setWarga((prev) =>
+      prev.map((w) => (w.id === updated.id ? updated : w))
+    );
+  };
+
+  const handleDeleteWarga = (id: number) => {
+    setWarga((prev) => prev.filter((w) => w.id !== id));
+  };
+
   // -------------------------------------------------------------
   // Modul Data Lembaga Handlers: Profil, Pengurus, Rekening
   // -------------------------------------------------------------
@@ -375,6 +385,8 @@ export default function DkmApp() {
           onAddAbsensi={handleAddAbsensi}
           onApproveSalary={handleApproveAndPaySalary}
           onAddWarga={handleAddWarga}
+          onUpdateWarga={handleUpdateWarga}
+          onDeleteWarga={handleDeleteWarga}
           profilLembaga={profilLembaga}
           onUpdateProfilLembaga={handleUpdateProfilLembaga}
           pengurusLembaga={pengurusLembaga}

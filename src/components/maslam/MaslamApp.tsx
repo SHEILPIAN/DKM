@@ -68,6 +68,8 @@ interface MaslamAppProps {
   onAddAbsensi: (absenData: Omit<Absensi, 'id'>) => void;
   onApproveSalary: (slipId: number) => void;
   onAddWarga: (w: Omit<Warga, 'id' | 'tanggalDaftar'>) => void;
+  onUpdateWarga?: (w: Warga) => void;
+  onDeleteWarga?: (id: number) => void;
   profilLembaga?: ProfilLembaga;
   onUpdateProfilLembaga?: (p: ProfilLembaga) => void;
   pengurusLembaga?: PengurusLembaga[];
@@ -107,6 +109,8 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onAddAbsensi,
   onApproveSalary,
   onAddWarga,
+  onUpdateWarga,
+  onDeleteWarga,
   profilLembaga,
   onUpdateProfilLembaga,
   pengurusLembaga,
@@ -164,6 +168,8 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               onBack={() => setCurrentScreen('home')}
               wargaList={warga}
               onAddWarga={onAddWarga}
+              onUpdateWarga={onUpdateWarga}
+              onDeleteWarga={onDeleteWarga}
             />
           )}
 
