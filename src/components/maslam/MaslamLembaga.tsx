@@ -375,12 +375,11 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({
             src={profilState.logoUrl || '/logo.png'}
             alt={`Logo ${profilState.nama}`}
             style={{
-              width: 76,
-              height: 76,
-              borderRadius: 18,
+              width: 84,
+              height: 84,
               margin: '0 auto 12px',
               objectFit: 'contain',
-              boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.18))',
             }}
           />
           <h3 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>
