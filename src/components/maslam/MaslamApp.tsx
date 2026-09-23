@@ -65,7 +65,6 @@ interface MaslamAppProps {
   onOpenBookingModal: (dateStr: string, facilityId: number) => void;
   onOpenZakatModal: () => void;
   onOpenAndroidModal: () => void;
-  onSwitchToDesktop: () => void;
   onToggleMustahiqDistribute: (id: number) => void;
   onRegisterShohibul: (
     hewanId: number,
@@ -166,7 +165,6 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
   onOpenBookingModal,
   onOpenZakatModal,
   onOpenAndroidModal,
-  onSwitchToDesktop,
   onToggleMustahiqDistribute,
   onRegisterShohibul,
   onAddAbsensi,

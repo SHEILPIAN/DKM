@@ -17,7 +17,7 @@ import {
   Phone,
 } from 'lucide-react';
 import { HewanQurban, ShohibulQurban, TipeHewan } from '@/types/dkm';
-import { formatRupiah } from '@/components/modules/financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface MaslamIdulAdhaProps {
   onBack: () => void;

@@ -21,7 +21,7 @@ import {
   BadgePercent,
 } from 'lucide-react';
 import { Mustahiq, KategoriAsnaf } from '@/types/dkm';
-import { formatRupiah } from '@/components/modules/financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface MaslamZiswafProps {
   onBack: () => void;

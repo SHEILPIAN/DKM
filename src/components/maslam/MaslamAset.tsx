@@ -20,7 +20,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { Fasilitas, Reservasi } from '@/types/dkm';
-import { formatRupiah } from '@/components/modules/financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface MaslamAsetProps {
   onBack: () => void;

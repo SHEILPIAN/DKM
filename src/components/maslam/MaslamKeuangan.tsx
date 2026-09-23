@@ -20,7 +20,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { KategoriKas, Transaksi, TipeTrx } from '@/types/dkm';
-import { formatRupiah } from '@/components/modules/financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface MaslamKeuanganProps {
   onBack: () => void;

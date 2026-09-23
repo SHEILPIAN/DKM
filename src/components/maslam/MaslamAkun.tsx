@@ -161,46 +161,7 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
         </div>
       </div>
 
-      {/* Switch to Desktop Admin View */}
-      <div style={{ padding: '4px 16px 16px' }}>
-        <div
-          onClick={onSwitchToDesktop}
-          style={{
-            background: '#ffffff',
-            borderRadius: 16,
-            border: '1px solid #e2e8f0',
-            padding: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 14,
-            cursor: 'pointer',
-          }}
-        >
-          <div
-            style={{
-              width: 46,
-              height: 46,
-              borderRadius: 12,
-              background: '#eff6ff',
-              color: '#1d4ed8',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <Monitor size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a' }}>
-              Beralih ke Portal Admin PC
-            </div>
-            <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: 2 }}>
-              Mode Layar Lebar dengan Grafik Arus Kas Lengkap
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* App Info Footer */}
       <div style={{ textAlign: 'center', padding: '16px', color: '#94a3b8', fontSize: '0.72rem' }}>

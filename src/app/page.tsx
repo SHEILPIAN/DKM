@@ -1,25 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { User, Sidebar } from '@/components/layout/Sidebar';
-import { Header } from '@/components/layout/Header';
-import { AnalyticsCards } from '@/components/modules/financial/AnalyticsCards';
-import { CashFlowChart } from '@/components/modules/financial/CashFlowChart';
-import { AllocationChart } from '@/components/modules/financial/AllocationChart';
+import { User } from '@/types/dkm';
 import { CashierModal } from '@/components/modules/financial/CashierModal';
-import { GeneralLedger } from '@/components/modules/financial/GeneralLedger';
-import { FacilityCalendar } from '@/components/modules/booking/FacilityCalendar';
 import { BookingFormModal } from '@/components/modules/booking/BookingFormModal';
-import { BookingAdminQueue } from '@/components/modules/booking/BookingAdminQueue';
 import { ZakatInputModal } from '@/components/modules/ziswaf/ZakatInputModal';
 import { MustahiqTable } from '@/components/modules/ziswaf/MustahiqTable';
 import { QurbanManager } from '@/components/modules/ziswaf/QurbanManager';
-import { EmployeeList } from '@/components/modules/hr/EmployeeList';
-import { PrayerAttendance } from '@/components/modules/hr/PrayerAttendance';
-import { SalarySlipModal } from '@/components/modules/hr/SalarySlipModal';
 import { JamaahMobileView } from '@/components/modules/jamaah/JamaahMobileView';
 import { AndroidAppModal } from '@/components/layout/AndroidAppModal';
-import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
 import { MaslamApp } from '@/components/maslam/MaslamApp';
 
 import {

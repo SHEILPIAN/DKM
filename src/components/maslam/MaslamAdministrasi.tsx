@@ -17,7 +17,7 @@ import {
   Phone,
 } from 'lucide-react';
 import { Pegawai, Absensi, SlipGaji, WaktuSalat, StatusHadir, Jabatan } from '@/types/dkm';
-import { formatRupiah } from '@/components/modules/financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface MaslamAdministrasiProps {
   onBack: () => void;
