@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { User } from '@/types/dkm';
 import {
   ChevronLeft,
-  User,
+  User as UserIcon,
   Smartphone,
   Download,
   ShieldCheck,
@@ -15,17 +16,18 @@ import {
 } from 'lucide-react';
 
 interface MaslamAkunProps {
+  loggedInUser?: User | null;
+  onLogout?: () => void;
   onBack: () => void;
-  onSwitchToDesktop: () => void;
   onOpenAndroidModal: () => void;
 }
 
 export const MaslamAkun: React.FC<MaslamAkunProps> = ({
+  loggedInUser,
+  onLogout,
   onBack,
-  onSwitchToDesktop,
   onOpenAndroidModal,
 }) => {
-  const [currentUser, setCurrentUser] = useState<'PIKET' | 'BENDAHARA' | 'KETUA'>('PIKET');
 
   return (
     <div style={{ paddingBottom: 80 }}>
@@ -37,7 +39,7 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
           padding: '10px 14px 12px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
           <button
             type="button"
             onClick={onBack}
@@ -56,6 +58,22 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
           >
             <ChevronLeft size={22} />
             <span>Akun & Pengaturan</span>
+          </button>
+          
+          <button
+            onClick={onLogout}
+            style={{
+              background: 'rgba(239, 68, 68, 0.2)',
+              border: '1px solid rgba(239, 68, 68, 0.5)',
+              color: '#fca5a5',
+              padding: '4px 10px',
+              borderRadius: 8,
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            Keluar
           </button>
         </div>
 
@@ -78,14 +96,10 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
           </div>
           <div>
             <div style={{ fontSize: '1.1rem', fontWeight: 900 }}>
-              {currentUser === 'PIKET' && 'Fian Tampan'}
-              {currentUser === 'BENDAHARA' && 'Ustadz Ridwan, S.E'}
-              {currentUser === 'KETUA' && 'H. Ahmad Dahlan'}
+              {loggedInUser?.nama || 'Pengguna'}
             </div>
             <div style={{ fontSize: '0.75rem', opacity: 0.85, marginTop: 2 }}>
-              {currentUser === 'PIKET' && 'Petugas Piket & Operator Kasir HP'}
-              {currentUser === 'BENDAHARA' && 'Bendahara Umum DKM'}
-              {currentUser === 'KETUA' && 'Ketua DKM AL-Muhajirin'}
+              {loggedInUser?.email || 'email@domain.com'}
             </div>
             <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
               <span
@@ -98,70 +112,10 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
                   borderRadius: 999,
                 }}
               >
-                DKM AKTIF
+                {loggedInUser?.role || 'JAMAAH'}
               </span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Switch Role Quick Bar */}
-      <div style={{ padding: '14px 16px 8px' }}>
-        <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: 8 }}>
-          Ganti Akun Pengguna / Otoritas
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button
-            type="button"
-            onClick={() => setCurrentUser('PIKET')}
-            style={{
-              flex: 1,
-              padding: '8px 6px',
-              borderRadius: 10,
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              background: currentUser === 'PIKET' ? '#0a3a78' : '#ffffff',
-              color: currentUser === 'PIKET' ? '#ffffff' : '#334155',
-              border: '1px solid #cbd5e1',
-              cursor: 'pointer',
-            }}
-          >
-            Fian (Piket)
-          </button>
-          <button
-            type="button"
-            onClick={() => setCurrentUser('BENDAHARA')}
-            style={{
-              flex: 1,
-              padding: '8px 6px',
-              borderRadius: 10,
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              background: currentUser === 'BENDAHARA' ? '#0a3a78' : '#ffffff',
-              color: currentUser === 'BENDAHARA' ? '#ffffff' : '#334155',
-              border: '1px solid #cbd5e1',
-              cursor: 'pointer',
-            }}
-          >
-            Bendahara
-          </button>
-          <button
-            type="button"
-            onClick={() => setCurrentUser('KETUA')}
-            style={{
-              flex: 1,
-              padding: '8px 6px',
-              borderRadius: 10,
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              background: currentUser === 'KETUA' ? '#0a3a78' : '#ffffff',
-              color: currentUser === 'KETUA' ? '#ffffff' : '#334155',
-              border: '1px solid #cbd5e1',
-              cursor: 'pointer',
-            }}
-          >
-            Ketua DKM
-          </button>
         </div>
       </div>
 

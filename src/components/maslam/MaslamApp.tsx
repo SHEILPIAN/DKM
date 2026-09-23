@@ -148,6 +148,8 @@ interface MaslamAppProps {
 }
 
 export const MaslamApp: React.FC<MaslamAppProps> = ({
+  loggedInUser,
+  onLogout,
   kategoriKas,
   transaksi,
   fasilitas,
@@ -425,8 +427,9 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
 
           {currentScreen === 'akun' && (
             <MaslamAkun
+              loggedInUser={loggedInUser}
+              onLogout={onLogout}
               onBack={() => setCurrentScreen('home')}
-              onSwitchToDesktop={onSwitchToDesktop}
               onOpenAndroidModal={onOpenAndroidModal}
             />
           )}

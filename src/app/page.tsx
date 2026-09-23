@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
+import { User, Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { AnalyticsCards } from '@/components/modules/financial/AnalyticsCards';
 import { CashFlowChart } from '@/components/modules/financial/CashFlowChart';
@@ -65,10 +65,12 @@ import {
   TvSetting,
 } from '@/types/dkm';
 
+import { LoginScreen } from '@/components/auth/LoginScreen';
+
 export default function DkmApp() {
   // Global State: Default to mobile HP Maslam view as requested
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [isMobileView, setIsMobileView] = useState<boolean>(true);
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
   // Data States
   const [kategoriKas, setKategoriKas] = useState<KategoriKas[]>(INITIAL_KATEGORI_KAS);
@@ -678,12 +680,11 @@ export default function DkmApp() {
   const pendingSalaryCount = slipGaji.filter((s) => s.status === 'PENDING').length;
 
   return (
-    <div className={`app-container ${isMobileView ? 'mobile-mode' : ''}`}>
-      {/* ======================================================= */}
-      {/* MODE UTAMA HP (MASLAM DKM MOBILE APPLICATION)           */}
-      {/* ======================================================= */}
-      {isMobileView ? (
-        <MaslamApp
+    <div className="app-container mobile-mode">
+      {!loggedInUser ? (
+        <LoginScreen onLogin={setLoggedInUser} />
+      ) : (
+<MaslamApp
           kategoriKas={kategoriKas}
           transaksi={transaksi}
           fasilitas={fasilitas}
@@ -700,7 +701,6 @@ export default function DkmApp() {
           onOpenBookingModal={handleOpenBookingForDate}
           onOpenZakatModal={() => setIsZakatModalOpen(true)}
           onOpenAndroidModal={() => setIsAndroidModalOpen(true)}
-          onSwitchToDesktop={() => setIsMobileView(false)}
           onToggleMustahiqDistribute={handleToggleMustahiqDistribute}
           onRegisterShohibul={handleRegisterShohibul}
           onAddAbsensi={handleAddAbsensi}
@@ -773,193 +773,6 @@ export default function DkmApp() {
           tvSetting={tvSetting}
           onUpdateTvSetting={handleUpdateTvSetting}
         />
-      ) : (
-        /* ===================================================== */
-        /* MODE ADMIN PORTAL DESKTOP (PC / LAYAR LEBAR)          */
-        /* ===================================================== */
-        <>
-          {/* Sidebar Navigation */}
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            pendingBookingsCount={pendingBookingsCount}
-            pendingSalaryCount={pendingSalaryCount}
-          />
-
-          {/* Main Content Wrapper */}
-          <div className="main-wrapper">
-            <div className="desktop-wallpaper-bg" aria-hidden="true" />
-            <Header
-              onOpenCashier={() => setIsCashierOpen(true)}
-              isMobileView={isMobileView}
-              setIsMobileView={setIsMobileView}
-              onOpenAndroidModal={() => setIsAndroidModalOpen(true)}
-            />
-
-            <main className="page-content">
-              {/* TAB 1: DASHBOARD ANALITIK KEUANGAN */}
-              {activeTab === 'dashboard' && (
-                <div>
-                  <div style={{ marginBottom: 20 }}>
-                    <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                      Dashboard Analitik Keuangan & Operasional
-                    </h2>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                      Ringkasan transparansi kas masjid, grafik arus kas mingguan, dan sebaran anggaran
-                    </p>
-                  </div>
-
-                  {/* Top 3 Cards + Trend Indicator */}
-                  <AnalyticsCards kategoriKas={kategoriKas} transaksi={transaksi} />
-
-                  {/* Charts Grid */}
-                  <div className="charts-grid">
-                    <CashFlowChart transaksi={transaksi} />
-                    <AllocationChart kategoriKas={kategoriKas} />
-                  </div>
-
-                  {/* Recent Transactions in Dashboard */}
-                  <GeneralLedger transaksi={transaksi.slice(0, 6)} kategoriKas={kategoriKas} />
-                </div>
-              )}
-
-              {/* TAB 2: KASIR INFAQ & BUKU BESAR */}
-              {activeTab === 'keuangan' && (
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                        Kasir Infaq & Buku Kas Umum
-                      </h2>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Input mutasi kas harian, cetak laporan, dan pencarian transaksi
-                      </p>
-                    </div>
-                    <button onClick={() => setIsCashierOpen(true)} className="btn-gold">
-                      + Buka Form Kasir Infaq
-                    </button>
-                  </div>
-
-                  <AnalyticsCards kategoriKas={kategoriKas} transaksi={transaksi} />
-                  <GeneralLedger transaksi={transaksi} kategoriKas={kategoriKas} />
-                </div>
-              )}
-
-              {/* TAB 3: RESERVASI FASILITAS */}
-              {activeTab === 'reservasi' && (
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                        Manajemen Reservasi Fasilitas Anti-Bentrok
-                      </h2>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Kalender ketersediaan aula & tenda, pengajuan jamaah, dan persetujuan otorisasi admin
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setSelectedBookingDate('2026-09-25');
-                        setSelectedBookingFacilityId(1);
-                        setIsBookingModalOpen(true);
-                      }}
-                      className="btn-primary"
-                    >
-                      + Buat Pengajuan Reservasi Baru
-                    </button>
-                  </div>
-
-                  {/* Calendar View */}
-                  <FacilityCalendar
-                    fasilitas={fasilitas}
-                    reservasi={reservasi}
-                    onSelectDateToBook={handleOpenBookingForDate}
-                  />
-
-                  {/* Admin Approval Queue */}
-                  <BookingAdminQueue
-                    reservasi={reservasi}
-                    onApprove={handleApproveBooking}
-                    onReject={handleRejectBooking}
-                  />
-                </div>
-              )}
-
-              {/* TAB 4: ZISWAF & QURBAN */}
-              {activeTab === 'ziswaf' && (
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                        Pengelolaan ZISWAF & Kepanitiaan Qurban
-                      </h2>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Penerimaan Zakat Fitrah/Maal, database 8 Asnaf tervalidasi RT/RW, dan slot patungan sapi 1:7
-                      </p>
-                    </div>
-                    <button onClick={() => setIsZakatModalOpen(true)} className="btn-primary">
-                      + Input Zakat Muzakki & Cetak Kupon
-                    </button>
-                  </div>
-
-                  {/* Mustahiq Distribution */}
-                  <MustahiqTable
-                    mustahiq={mustahiq}
-                    onToggleDistribute={handleToggleMustahiqDistribute}
-                    stokBerasTersediaKg={stokBerasKg}
-                    danaZakatTersediaRp={danaZakatRp}
-                  />
-
-                  {/* Qurban Joint Cow Management */}
-                  <QurbanManager
-                    hewanQurban={hewanQurban}
-                    onRegisterShohibul={handleRegisterShohibul}
-                  />
-                </div>
-              )}
-
-              {/* TAB 5: HR & KAFALAH PETUGAS */}
-              {activeTab === 'hr' && (
-                <div>
-                  <div style={{ marginBottom: 10 }}>
-                    <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                      HR Petugas Masjid & Penggajian (Kafalah)
-                    </h2>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                      Perekaman kehadiran shalat fardhu imam/muadzin, perhitungan honor otomatis, dan slip gaji digital
-                    </p>
-                  </div>
-
-                  {/* Check-In Kehadiran Shalat */}
-                  <PrayerAttendance
-                    pegawai={pegawai}
-                    absensi={absensi}
-                    onAddAbsensi={handleAddAbsensi}
-                  />
-
-                  {/* Master Pegawai */}
-                  <EmployeeList pegawai={pegawai} />
-
-                  {/* Slip Gaji Digital & Auto-Deduct */}
-                  <SalarySlipModal
-                    slipGajiList={slipGaji}
-                    onApproveAndPay={handleApproveAndPaySalary}
-                  />
-                </div>
-              )}
-            </main>
-          </div>
-
-          {/* MOBILE BOTTOM NAVIGATION BAR (Hanya di mode desktop simulator) */}
-          <MobileBottomNav
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            isMobileView={isMobileView}
-            setIsMobileView={setIsMobileView}
-            pendingBookingsCount={pendingBookingsCount}
-            pendingSalaryCount={pendingSalaryCount}
-          />
-        </>
       )}
 
       {/* MODAL 1: Kasir Infaq Masuk / Keluar */}
@@ -993,6 +806,7 @@ export default function DkmApp() {
         isOpen={isAndroidModalOpen}
         onClose={() => setIsAndroidModalOpen(false)}
       />
+    
     </div>
   );
 }

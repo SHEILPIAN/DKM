@@ -18,11 +18,12 @@ import {
   InventoryItem,
 } from '@/types/dkm';
 
-export const INITIAL_USERS: User[] = [
-  { id: 1, nama: 'H. Ahmad Dahlan (Ketua DKM)', email: 'ketua@almuhajirin.org', role: 'KETUA_DKM' },
-  { id: 2, nama: 'Ustadz Ridwan, S.E (Bendahara)', email: 'bendahara@almuhajirin.org', role: 'BENDAHARA' },
-  { id: 3, nama: 'Fian Tampan (Petugas Piket)', email: 'piket@almuhajirin.org', role: 'PIKET' },
-  { id: 4, nama: 'Admin IT DKM', email: 'admin@almuhajirin.org', role: 'SUPER_ADMIN' },
+export const MOCK_USERS: User[] = [
+  { id: 1, nama: 'H. Ahmad Dahlan (Ketua DKM)', email: 'ketua@almuhajirin.org', password: 'admin', role: 'KETUA_DKM' },
+  { id: 2, nama: 'Ustadz Ridwan, S.E (Bendahara)', email: 'bendahara@almuhajirin.org', password: 'admin', role: 'BENDAHARA' },
+  { id: 3, nama: 'Fian Tampan (Petugas Piket)', email: 'piket@almuhajirin.org', password: 'admin', role: 'PIKET' },
+  { id: 4, nama: 'Admin IT DKM', email: 'admin@almuhajirin.org', password: 'admin', role: 'SUPER_ADMIN' },
+  { id: 5, nama: 'Bapak Budi (Jamaah)', email: 'jamaah@almuhajirin.org', password: 'admin', role: 'JAMAAH' as any },
 ];
 
 export const INITIAL_KATEGORI_KAS: KategoriKas[] = [
