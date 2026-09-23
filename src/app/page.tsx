@@ -12,6 +12,7 @@ import { AndroidAppModal } from '@/components/layout/AndroidAppModal';
 import { MaslamApp } from '@/components/maslam/MaslamApp';
 
 import {
+  MOCK_USERS,
   INITIAL_KATEGORI_KAS,
   INITIAL_TRANSAKSI,
   INITIAL_FASILITAS,
@@ -60,6 +61,7 @@ export default function DkmApp() {
   // Global State: Default to mobile HP Maslam view as requested
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+  const [usersList, setUsersList] = useState<User[]>(MOCK_USERS);
 
   // Data States
   const [kategoriKas, setKategoriKas] = useState<KategoriKas[]>(INITIAL_KATEGORI_KAS);
@@ -150,7 +152,21 @@ export default function DkmApp() {
   const [isZakatModalOpen, setIsZakatModalOpen] = useState<boolean>(false);
   const [isAndroidModalOpen, setIsAndroidModalOpen] = useState<boolean>(false);
 
+
+  // Handlers for User Management
+  const handleAddUser = (u: Omit<User, 'id'>) => {
+    const created: User = { ...u, id: Date.now() };
+    setUsersList((prev) => [...prev, created]);
+  };
+  const handleUpdateUser = (u: User) => {
+    setUsersList((prev) => prev.map((item) => (item.id === u.id ? u : item)));
+  };
+  const handleDeleteUser = (id: number) => {
+    setUsersList((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // -------------------------------------------------------------
+
   // Modul 1 Handlers: Kasir & Mutasi Saldo
   // -------------------------------------------------------------
   const handleAddTransaction = (newTrx: Omit<Transaksi, 'id'>) => {

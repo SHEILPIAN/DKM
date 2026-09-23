@@ -23,7 +23,7 @@ export const MOCK_USERS: User[] = [
   { id: 2, nama: 'Ustadz Ridwan, S.E (Bendahara)', email: 'bendahara@almuhajirin.org', password: 'admin', role: 'BENDAHARA' },
   { id: 3, nama: 'Fian Tampan (Petugas Piket)', email: 'piket@almuhajirin.org', password: 'admin', role: 'PIKET' },
   { id: 4, nama: 'Admin IT DKM', email: 'admin@almuhajirin.org', password: 'admin', role: 'SUPER_ADMIN' },
-  { id: 5, nama: 'Bapak Budi (Jamaah)', email: 'jamaah@almuhajirin.org', password: 'admin', role: 'JAMAAH' as any },
+  { id: 5, nama: 'Bapak Budi (Jamaah)', email: 'jamaah@almuhajirin.org', password: 'admin', role: 'JAMAAH' },
 ];
 
 export const INITIAL_KATEGORI_KAS: KategoriKas[] = [

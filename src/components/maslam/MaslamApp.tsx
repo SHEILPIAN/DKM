@@ -48,10 +48,15 @@ import { MaslamInventory } from './MaslamInventory';
 import { MaslamIdulFitri } from './MaslamIdulFitri';
 import { MaslamTvMasjid } from './MaslamTvMasjid';
 import { MaslamAkun } from './MaslamAkun';
+import { MaslamUserManagement } from './MaslamUserManagement';
 
 interface MaslamAppProps {
   loggedInUser?: User | null;
   onLogout?: () => void;
+  usersList?: User[];
+  onAddUser?: (u: Omit<User, 'id'>) => void;
+  onUpdateUser?: (u: User) => void;
+  onDeleteUser?: (id: number) => void;
   kategoriKas: KategoriKas[];
   transaksi: Transaksi[];
   fasilitas: Fasilitas[];
@@ -152,6 +157,10 @@ interface MaslamAppProps {
 export const MaslamApp: React.FC<MaslamAppProps> = ({
   loggedInUser,
   onLogout,
+  usersList = [],
+  onAddUser = () => {},
+  onUpdateUser = () => {},
+  onDeleteUser = () => {},
   kategoriKas,
   transaksi,
   fasilitas,
@@ -267,6 +276,7 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
         <div style={{ flex: 1, position: 'relative', zIndex: 1, overflowY: 'auto', overflowX: 'hidden', minHeight: 0, paddingBottom: '70px' }}>
           {currentScreen === 'home' && (
             <MaslamHome
+              loggedInUser={loggedInUser}
               onNavigate={(screen) => setCurrentScreen(screen)}
               onOpenQris={() => setIsQrisBannerOpen(true)}
               onOpenQrScan={() => setIsQrScanOpen(true)}
@@ -423,6 +433,17 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               onDeletePengumuman={onDeleteTvPengumuman}
               tvSetting={tvSetting}
               onUpdateTvSetting={onUpdateTvSetting}
+            />
+          )}
+
+          
+          {currentScreen === 'users' && (
+            <MaslamUserManagement
+              onBack={() => setCurrentScreen('home')}
+              usersList={usersList}
+              onAddUser={onAddUser}
+              onUpdateUser={onUpdateUser}
+              onDeleteUser={onDeleteUser}
             />
           )}
 

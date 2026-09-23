@@ -1,6 +1,6 @@
 // Type definitions matching the Prisma schema and UI state
 
-export type Role = 'SUPER_ADMIN' | 'KETUA_DKM' | 'BENDAHARA' | 'PIKET';
+export type Role = 'SUPER_ADMIN' | 'KETUA_DKM' | 'BENDAHARA' | 'PIKET' | 'JAMAAH';
 export type TipeTrx = 'IN' | 'OUT';
 export type StatusReservasi = 'PENDING' | 'APPROVED' | 'REJECTED' | 'COMPLETED';
 export type KategoriAsnaf = 

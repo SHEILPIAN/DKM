@@ -19,17 +19,19 @@ import {
   FileSpreadsheet,
   Home,
   Layers,
-  User,
+  User as UserIcon,
 } from 'lucide-react';
-import { KategoriKas, Transaksi, Fasilitas, Reservasi } from '@/types/dkm';
+import { User, KategoriKas, Transaksi, Fasilitas, Reservasi } from '@/types/dkm';
 
 interface MaslamHomeProps {
+  loggedInUser?: User | null;
   onNavigate: (screen: string) => void;
   onOpenQris: () => void;
   onOpenQrScan: () => void;
 }
 
 export const MaslamHome: React.FC<MaslamHomeProps> = ({
+  loggedInUser,
   onNavigate,
   onOpenQris,
   onOpenQrScan,
