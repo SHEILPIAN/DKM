@@ -206,7 +206,7 @@ export const MaslamKegiatan: React.FC<MaslamKegiatanProps> = ({
   };
 
   return (
-    <div style={{ paddingBottom: 85, position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Toast */}
       <AnimatePresence>
         {toastMessage && (

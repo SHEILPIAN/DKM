@@ -262,7 +262,7 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({
   };
 
   return (
-    <div style={{ paddingBottom: 85, position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (

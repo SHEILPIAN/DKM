@@ -998,14 +998,6 @@ body {
     border-radius: 0;
     box-shadow: none;
     margin: 0;
-    padding-bottom: 65px; /* Prevent content hiding behind fixed dock */
-  }
-  .maslam-bottom-dock {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100vw;
   }
 }
 
@@ -1288,10 +1280,10 @@ body {
 
 /* Bottom Navigation Dock */
 .maslam-bottom-dock {
-  position: sticky;
+  position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
+  width: 100%;
   background: #ffffff;
   border-top: 1px solid #e2e8f0;
   display: flex;

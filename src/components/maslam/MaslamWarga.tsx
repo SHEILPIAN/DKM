@@ -190,7 +190,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
   });
 
   return (
-    <div style={{ paddingBottom: 85, position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (

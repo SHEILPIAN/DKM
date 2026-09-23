@@ -143,7 +143,7 @@ export const MaslamAset: React.FC<MaslamAsetProps> = ({
   };
 
   return (
-    <div style={{ paddingBottom: 85, position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (

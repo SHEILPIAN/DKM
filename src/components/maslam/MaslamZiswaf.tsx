@@ -210,7 +210,7 @@ export const MaslamZiswaf: React.FC<MaslamZiswafProps> = ({
   };
 
   return (
-    <div style={{ paddingBottom: 85, position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Toast */}
       <AnimatePresence>
         {toastMessage && (

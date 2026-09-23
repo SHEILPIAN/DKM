@@ -193,7 +193,7 @@ export const MaslamInventory: React.FC<MaslamInventoryProps> = ({
   };
 
   return (
-    <div style={{ paddingBottom: 85, position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
