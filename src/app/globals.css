@@ -966,7 +966,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   border-radius: 40px;
   margin: 0 auto;
 }
