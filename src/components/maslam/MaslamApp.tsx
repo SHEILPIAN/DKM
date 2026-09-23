@@ -5,12 +5,13 @@ import {
   Home,
   Building2,
   Sparkles,
-  User,
+  User as UserIcon,
   QrCode,
   CheckCircle2,
   X,
 } from 'lucide-react';
 import {
+  User,
   KategoriKas,
   Transaksi,
   Fasilitas,
@@ -49,6 +50,8 @@ import { MaslamTvMasjid } from './MaslamTvMasjid';
 import { MaslamAkun } from './MaslamAkun';
 
 interface MaslamAppProps {
+  loggedInUser?: User | null;
+  onLogout?: () => void;
   kategoriKas: KategoriKas[];
   transaksi: Transaksi[];
   fasilitas: Fasilitas[];
@@ -486,7 +489,7 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
             className={`maslam-dock-tab ${dockActiveTab === 'akun' ? 'active' : ''}`}
             onClick={() => setCurrentScreen('akun')}
           >
-            <User size={20} strokeWidth={dockActiveTab === 'akun' ? 2.6 : 1.8} />
+            <UserIcon size={20} strokeWidth={dockActiveTab === 'akun' ? 2.6 : 1.8} />
             <span>Akun</span>
           </button>
         </nav>

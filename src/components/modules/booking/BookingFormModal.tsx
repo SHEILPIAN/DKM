@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, Calendar, User, Phone, FileText, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Fasilitas, Reservasi } from '@/types/dkm';
-import { formatRupiah } from '../financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface BookingFormModalProps {
   isOpen: boolean;

@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { KategoriKas, TipeTrx, Transaksi } from '@/types/dkm';
-import { formatRupiah } from './AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface CashierModalProps {
   isOpen: boolean;

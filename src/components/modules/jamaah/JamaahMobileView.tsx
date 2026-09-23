@@ -14,7 +14,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import { KategoriKas, Fasilitas } from '@/types/dkm';
-import { formatRupiah } from '../financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface JamaahMobileViewProps {
   kategoriKas: KategoriKas[];

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, HeartHandshake, QrCode, CheckCircle2, Share2, Printer, Sparkles } from 'lucide-react';
 import { ZakatFitrahTrx } from '@/types/dkm';
-import { formatRupiah } from '../financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface ZakatInputModalProps {
   isOpen: boolean;

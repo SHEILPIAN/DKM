@@ -14,7 +14,7 @@ import {
   CreditCard,
 } from 'lucide-react';
 import { HewanQurban, ShohibulQurban } from '@/types/dkm';
-import { formatRupiah } from '../financial/AnalyticsCards';
+import { formatRupiah } from '@/lib/utils';
 
 interface QurbanManagerProps {
   hewanQurban: HewanQurban[];
