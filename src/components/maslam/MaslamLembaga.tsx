@@ -300,7 +300,7 @@ export const MaslamLembaga: React.FC<MaslamLembagaProps> = ({
         style={{
           background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
           color: 'white',
-          padding: '16px 18px 20px', position: 'sticky', top: 0, zIndex: 30,
+          padding: '10px 14px 12px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>

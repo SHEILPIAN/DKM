@@ -228,7 +228,7 @@ export const MaslamWarga: React.FC<MaslamWargaProps> = ({
         style={{
           background: 'linear-gradient(135deg, #094b5c 0%, #06333f 100%)',
           color: 'white',
-          padding: '16px 18px 22px',
+          padding: '10px 14px 12px',
           position: 'sticky', top: 0, zIndex: 30,
           overflow: 'hidden',
         }}

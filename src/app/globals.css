@@ -289,7 +289,7 @@ body {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 14px 32px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1007,7 +1007,7 @@ body {
   background-size: cover;
   background-position: center 20%;
   color: white;
-  padding: 16px 18px 18px;
+  padding: 10px 14px 10px;
   position: sticky;
   top: 0;
   overflow: hidden;
@@ -1033,42 +1033,42 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .maslam-brand-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .maslam-logo-img {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
 }
 
 .maslam-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   color: #ffffff;
 }
 
 .maslam-badge-dkm {
   background: #f59e0b;
   color: #1e293b;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 800;
-  padding: 2px 7px;
+  padding: 2px 6px;
   border-radius: 999px;
   letter-spacing: 0.5px;
 }
 
 .maslam-bell-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
   display: flex;
@@ -1082,10 +1082,10 @@ body {
 
 .maslam-bell-dot {
   position: absolute;
-  top: 7px;
-  right: 8px;
-  width: 7px;
-  height: 7px;
+  top: 6px;
+  right: 7px;
+  width: 6px;
+  height: 6px;
   background: #ef4444;
   border-radius: 50%;
   border: 1.5px solid #093c78;
@@ -1095,7 +1095,7 @@ body {
 .maslam-sub-header {
   background: linear-gradient(135deg, #093c78 0%, #062b59 100%);
   color: white;
-  padding: 16px 18px 20px;
+  padding: 10px 14px 12px;
   position: sticky;
   top: 0;
   z-index: 30;
@@ -1109,7 +1109,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .maslam-back-btn {
@@ -1118,21 +1118,21 @@ body {
   color: white;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1rem;
+  gap: 6px;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
 }
 
 .maslam-page-title-group h2 {
-  font-size: 1.45rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
   color: white;
 }
 
 .maslam-page-title-group p {
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   opacity: 0.88;
   letter-spacing: 0.2px;
   margin-top: 2px;
@@ -1140,13 +1140,13 @@ body {
 
 /* Hero Banner Carousel */
 .maslam-carousel-wrap {
-  padding: 14px 16px 8px;
+  padding: 12px 14px 6px;
 }
 
 .maslam-banner-card {
-  border-radius: 20px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   position: relative;
   background: #ffffff;
 }

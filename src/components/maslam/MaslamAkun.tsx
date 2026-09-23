@@ -34,7 +34,7 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
         style={{
           background: 'linear-gradient(135deg, #093c78 0%, #062b59 100%)',
           color: 'white',
-          padding: '16px 18px 24px', position: 'sticky', top: 0, zIndex: 30,
+          padding: '10px 14px 12px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>

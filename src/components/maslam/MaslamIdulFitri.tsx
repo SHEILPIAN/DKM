@@ -263,7 +263,7 @@ export const MaslamIdulFitri: React.FC<MaslamIdulFitriProps> = ({
         style={{
           background: 'linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%)',
           color: 'white',
-          padding: '16px 18px 20px', position: 'sticky', top: 0, zIndex: 30,
+          padding: '10px 14px 12px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <button

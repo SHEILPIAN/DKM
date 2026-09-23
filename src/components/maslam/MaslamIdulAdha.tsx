@@ -188,7 +188,7 @@ export const MaslamIdulAdha: React.FC<MaslamIdulAdhaProps> = ({
         style={{
           background: 'linear-gradient(135deg, #7e22ce 0%, #581c87 100%)',
           color: 'white',
-          padding: '16px 18px 20px', position: 'sticky', top: 0, zIndex: 30,
+          padding: '10px 14px 12px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>

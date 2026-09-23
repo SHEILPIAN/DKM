@@ -211,7 +211,7 @@ export const MaslamTvMasjid: React.FC<MaslamTvMasjidProps> = ({
         style={{
           background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
           color: 'white',
-          padding: '16px 18px 20px', position: 'sticky', top: 0, zIndex: 30,
+          padding: '10px 14px 12px', position: 'sticky', top: 0, zIndex: 30,
         }}
       >
         <button
