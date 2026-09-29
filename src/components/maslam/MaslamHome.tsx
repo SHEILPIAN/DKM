@@ -20,6 +20,11 @@ import {
   Home,
   Layers,
   User as UserIcon,
+  UserCheck,
+  ShieldCheck,
+  LogOut,
+  X,
+  Shield,
 } from 'lucide-react';
 import { User, KategoriKas, Transaksi, Fasilitas, Reservasi } from '@/types/dkm';
 
@@ -28,6 +33,7 @@ interface MaslamHomeProps {
   onNavigate: (screen: string) => void;
   onOpenQris: () => void;
   onOpenQrScan: () => void;
+  onLogout?: () => void;
 }
 
 export const MaslamHome: React.FC<MaslamHomeProps> = ({
@@ -35,8 +41,10 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
   onNavigate,
   onOpenQris,
   onOpenQrScan,
+  onLogout,
 }) => {
   const [activeSlide, setActiveSlide] = useState<number>(0);
+  const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
 
   const banners = [
     {
@@ -133,6 +141,12 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
       icon: FileSpreadsheet,
       bg: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
     },
+    {
+      id: 'akun',
+      label: 'Akun Pengguna',
+      icon: UserCheck,
+      bg: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+    },
   ];
 
   const currentBanner = banners[activeSlide];
@@ -155,16 +169,146 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
             </div>
           </div>
 
-          <button
-            type="button"
-            className="maslam-bell-btn"
-            onClick={() => alert('Notifikasi DKM AL-Muhajirin: 1 Pengajuan Reservasi baru & 3 Slip Gaji menunggu approval.')}
-          >
-            <Bell size={18} />
-            <span className="maslam-bell-dot" />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="button"
+              className="maslam-bell-btn"
+              onClick={() => alert('Notifikasi DKM AL-Muhajirin: 1 Pengajuan Reservasi baru & 3 Slip Gaji menunggu approval.')}
+              title="Notifikasi"
+            >
+              <Bell size={18} />
+              <span className="maslam-bell-dot" />
+            </button>
+
+            {/* Quick Profile / Akun Button */}
+            <button
+              type="button"
+              onClick={() => setShowAccountModal(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                background: 'rgba(255, 255, 255, 0.14)',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+                borderRadius: 999,
+                padding: '3px 8px 3px 4px',
+                color: 'white',
+                cursor: 'pointer',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                transition: 'all 0.2s',
+              }}
+              title="Buka Menu Akun Pengguna"
+            >
+              <div
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  background: '#f59e0b',
+                  color: '#1e293b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.72rem',
+                  fontWeight: 900,
+                }}
+              >
+                {loggedInUser?.nama ? loggedInUser.nama.charAt(0).toUpperCase() : 'U'}
+              </div>
+              <span style={{ maxWidth: 84, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {loggedInUser?.nama ? loggedInUser.nama.split(' ')[0] : 'Akun'}
+              </span>
+            </button>
+          </div>
         </div>
       </header>
+
+      {/* User Greeting & Akun Bar */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #093c78 0%, #062b59 100%)',
+          padding: '0 14px 12px',
+          color: 'white',
+        }}
+      >
+        <div
+          onClick={() => setShowAccountModal(true)}
+          style={{
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.16)',
+            borderRadius: 14,
+            padding: '10px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            transition: 'background 0.2s',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: '#fef3c7',
+                border: '2px solid #f59e0b',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.25rem',
+                flexShrink: 0,
+              }}
+            >
+              🧔
+            </div>
+            <div>
+              <div style={{ fontSize: '0.68rem', color: '#93c5fd', fontWeight: 600 }}>
+                Assalamu&apos;alaikum,
+              </div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.2 }}>
+                {loggedInUser?.nama || 'Pengguna DKM'}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 3 }}>
+                <span
+                  style={{
+                    background: '#f59e0b',
+                    color: '#1e293b',
+                    fontSize: '0.6rem',
+                    fontWeight: 800,
+                    padding: '1px 7px',
+                    borderRadius: 999,
+                  }}
+                >
+                  {loggedInUser?.role || 'JAMAAH'}
+                </span>
+                <span style={{ fontSize: '0.65rem', color: '#cbd5e1', opacity: 0.85 }}>
+                  • Menu Akun
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '6px 10px',
+              borderRadius: 8,
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              color: 'white',
+            }}
+          >
+            <UserIcon size={14} />
+            <span>Akun</span>
+          </div>
+        </div>
+      </div>
 
       {/* 2. Hero Carousel Banner */}
       <div className="maslam-carousel-wrap">
@@ -277,6 +421,305 @@ export const MaslamHome: React.FC<MaslamHomeProps> = ({
           <ChevronRight size={18} style={{ color: '#ca8a04' }} />
         </div>
       </div>
+
+      {/* 5. Menu Akun Pengguna Modal / Bottom Sheet */}
+      {showAccountModal && (
+        <div
+          className="modal-overlay"
+          style={{ zIndex: 130 }}
+          onClick={() => setShowAccountModal(false)}
+        >
+          <div
+            className="modal-card"
+            style={{
+              maxWidth: 390,
+              width: '92%',
+              padding: '20px',
+              borderRadius: 20,
+              textAlign: 'left',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingBottom: 14,
+                borderBottom: '1px solid #f1f5f9',
+                marginBottom: 16,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 10,
+                    background: '#eff6ff',
+                    color: '#2563eb',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <UserCheck size={18} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                    Menu Akun Pengguna
+                  </h3>
+                  <p style={{ fontSize: '0.7rem', color: '#64748b', margin: 0 }}>
+                    Profil & Otorisasi Sistem DKM
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowAccountModal(false)}
+                style={{
+                  background: '#f1f5f9',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: 30,
+                  height: 30,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#64748b',
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Profile Info Box */}
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+                borderRadius: 14,
+                padding: '14px',
+                border: '1px solid #e2e8f0',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                marginBottom: 16,
+              }}
+            >
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: '50%',
+                  background: '#fef3c7',
+                  border: '2px solid #f59e0b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.4rem',
+                  flexShrink: 0,
+                }}
+              >
+                🧔
+              </div>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {loggedInUser?.nama || 'Pengguna DKM'}
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {loggedInUser?.email || 'email@domain.com'}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                  <span
+                    style={{
+                      background: '#f59e0b',
+                      color: '#1e293b',
+                      fontSize: '0.62rem',
+                      fontWeight: 800,
+                      padding: '1px 8px',
+                      borderRadius: 999,
+                    }}
+                  >
+                    {loggedInUser?.role || 'JAMAAH'}
+                  </span>
+                  <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <ShieldCheck size={12} /> Aktif
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Menu Options List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+              {/* Option 1: Buka Halaman Akun & Pengaturan */}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAccountModal(false);
+                  onNavigate('akun');
+                }}
+                style={{
+                  width: '100%',
+                  padding: '12px 14px',
+                  borderRadius: 12,
+                  border: '1px solid #e2e8f0',
+                  background: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: 10,
+                      background: '#eff6ff',
+                      color: '#2563eb',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <UserIcon size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#0f172a' }}>
+                      Profil & Pengaturan Akun
+                    </div>
+                    <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
+                      Lihat rincian akun, instal APK Android
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight size={16} color="#94a3b8" />
+              </button>
+
+              {/* Option 2 (Super Admin / Admin): Kelola Pengguna Sistem */}
+              {loggedInUser?.role === 'SUPER_ADMIN' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAccountModal(false);
+                    onNavigate('users');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    borderRadius: 12,
+                    border: '1px solid #bfdbfe',
+                    background: '#f0f7ff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div
+                      style={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: 10,
+                        background: '#2563eb',
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Shield size={18} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#1e3a8a' }}>
+                        Manajemen User Pengguna
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#3b82f6' }}>
+                        Tambah, edit user & hak akses sistem
+                      </div>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} color="#2563eb" />
+                </button>
+              )}
+
+              {/* Option 3: Keluar Akun */}
+              {onLogout && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAccountModal(false);
+                    onLogout();
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    borderRadius: 12,
+                    border: '1px solid #fee2e2',
+                    background: '#fef2f2',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div
+                      style={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: 10,
+                        background: '#fee2e2',
+                        color: '#ef4444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <LogOut size={18} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#dc2626' }}>
+                        Keluar (Logout)
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#ef4444' }}>
+                        Keluar dari sesi akun pengguna ini
+                      </div>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} color="#ef4444" />
+                </button>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowAccountModal(false)}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: 10,
+                border: '1px solid #e2e8f0',
+                background: '#f8fafc',
+                color: '#64748b',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -280,6 +280,7 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               onNavigate={(screen) => setCurrentScreen(screen)}
               onOpenQris={() => setIsQrisBannerOpen(true)}
               onOpenQrScan={() => setIsQrScanOpen(true)}
+              onLogout={onLogout}
             />
           )}
 
@@ -453,6 +454,7 @@ export const MaslamApp: React.FC<MaslamAppProps> = ({
               onLogout={onLogout}
               onBack={() => setCurrentScreen('home')}
               onOpenAndroidModal={onOpenAndroidModal}
+              onNavigate={(screen) => setCurrentScreen(screen)}
             />
           )}
         </div>

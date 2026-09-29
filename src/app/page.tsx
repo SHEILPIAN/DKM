@@ -689,7 +689,13 @@ export default function DkmApp() {
       {!loggedInUser ? (
         <LoginScreen onLogin={setLoggedInUser} />
       ) : (
-<MaslamApp
+        <MaslamApp
+          loggedInUser={loggedInUser}
+          onLogout={() => setLoggedInUser(null)}
+          usersList={usersList}
+          onAddUser={handleAddUser}
+          onUpdateUser={handleUpdateUser}
+          onDeleteUser={handleDeleteUser}
           kategoriKas={kategoriKas}
           transaksi={transaksi}
           fasilitas={fasilitas}
