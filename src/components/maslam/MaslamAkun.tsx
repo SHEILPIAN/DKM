@@ -172,6 +172,7 @@ export const MaslamAkun: React.FC<MaslamAkunProps> = ({
       {loggedInUser?.role === 'SUPER_ADMIN' && onNavigate && (
         <div style={{ padding: '4px 16px 10px' }}>
           <div
+            id="btn-manajemen-user"
             onClick={() => onNavigate('users')}
             style={{
               background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
